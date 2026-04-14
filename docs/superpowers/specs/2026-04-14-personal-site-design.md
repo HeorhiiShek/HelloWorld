@@ -27,7 +27,9 @@ A minimalist personal website where visitors scroll through photos. Each photo i
 
 ### `/` — Home (main scroll feed)
 
-The entire homepage is an infinite stacked scroll using the `ImagesScrollingAnimation` component. Photos stack on top of each other like a card deck. Scrolling peels each card away to reveal the next. The loop is infinite — when the last photo is reached, it cycles back to the first.
+The entire homepage is an infinite stacked scroll using the `ImagesScrollingAnimation` component. Photos stack on top of each other like a card deck. Scrolling peels each card away to reveal the next.
+
+**Infinite loop implementation:** The component doesn't loop natively. To fake infinite scroll, the `stories` array is triplicated (`[...stories, ...stories, ...stories]`) before being passed as props, giving enough scroll depth to feel endless for any reasonable collection size.
 
 - Each card shows one photo, full-bleed, centered
 - A subtle label (e.g. a short title or date) appears on hover
@@ -127,9 +129,8 @@ src/
     stories.ts              ← all content lives here
   components/
     ui/
-      images-scrolling-animation.tsx   ← stacked scroll (from prompt)
+      images-scrolling-animation.tsx   ← stacked scroll (from prompt, click handler added)
     Nav.tsx                 ← fixed top bar
-    StoryCard.tsx           ← single photo card in the feed
     BodyRenderer.tsx        ← renders BodyBlock[] on story page
   pages/
     Home.tsx                ← wraps ImagesScrollingAnimation
