@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ganna Shekunova | Psychoanalyst &amp; Therapist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      --white: #ffffff;
+      --black: #1a0e09;
+      --accent: #F4A460;
+      --light-accent: #F5F5DC;
+      --dark-accent: #A0522D;
+      --primary: #E35336;
+      --heading-font: 'Cormorant Garamond', Georgia, serif;
+      --body-font: 'DM Sans', sans-serif;
+      --meta-font: 'EB Garamond', Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body { font-family: var(--body-font); font-weight: 300; line-height: 1.8em; color: var(--black); background-color: var(--white); -webkit-font-smoothing: antialiased; word-wrap: break-word; overflow-wrap: break-word; }
+
+    /* ── NAV ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.96); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .nav-inner { max-width: 1646px; margin: 0 auto; padding: 0 2vw; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .site-title { font-family: var(--heading-font); font-weight: 500; font-size: 1.25rem; letter-spacing: 0.04em; color: var(--black); text-decoration: none; white-space: nowrap; }
+    nav { display: flex; align-items: center; gap: 2.2rem; }
+    nav a { font-family: var(--body-font); font-weight: 300; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--black); text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: var(--accent); }
+
+    /* ── LANG SWITCHER ── */
+    .lang-switcher { display: flex; align-items: center; gap: 0.35rem; margin-left: 1.2rem; }
+    .lang-btn { font-family: var(--body-font); font-size: 0.72rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; cursor: pointer; color: rgba(26,14,9,0.45); padding: 0.2em 0.35em; transition: color 0.2s; }
+    .lang-btn:hover { color: var(--dark-accent); }
+    .lang-btn.active { color: var(--dark-accent); font-weight: 500; border-bottom: 1px solid var(--accent); }
+    .lang-sep { font-size: 0.65rem; color: rgba(26,14,9,0.25); }
+
+    /* ── HAMBURGER ── */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--black); transition: transform 0.3s, opacity 0.3s; transform-origin: center; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--black); padding: 1.2rem 1.5rem 1.8rem; z-index: 99; border-bottom: 2px solid var(--primary); flex-direction: column; gap: 0; max-height: calc(100vh - 64px); overflow-y: auto; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--body-font); font-weight: 300; font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.85); text-decoration: none; padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-menu .mob-book { border: 1px solid rgba(255,255,255,0.4); border-radius: 9999px; padding: 0.7em 1.4em; text-align: center; margin-top: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.4) !important; color: rgba(255,255,255,0.9); }
+    .mobile-menu .mob-book:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-lang { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mob-lang-btn { font-family: var(--body-font); font-size: 0.78rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.45); padding: 0.2em 0.4em; transition: color 0.2s; }
+    .mob-lang-btn:hover { color: var(--accent); }
+    .mob-lang-btn.active { color: var(--accent); font-weight: 500; }
+    .mob-lang-sep { font-size: 0.65rem; color: rgba(255,255,255,0.2); }
+
+    /* ── HERO ── */
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 64px; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(170deg, #E35336 0%, #c94628 15%, #b83d22 30%, #d44e30 45%, #e0603e 55%, #c94a2e 70%, #b83c20 85%, #a03218 100%); }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: transparent; }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 10vmax 2vw; color: #fff; }
+    .hero-eyebrow { font-family: var(--meta-font); font-style: italic; font-size: 1.05rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.8); margin-bottom: 1.2rem; }
+    .hero-title { font-family: var(--heading-font); font-weight: 400; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1em; letter-spacing: 0.01em; color: #fff; margin-bottom: 1.5rem; }
+    .hero-subtitle { font-family: var(--body-font); font-weight: 300; font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 2.5rem; min-height: 1.6em; }
+    .typewriter-cursor { display: inline-block; width: 1px; height: 1em; background: rgba(255,255,255,0.7); margin-left: 2px; vertical-align: text-bottom; animation: blink 0.7s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── CTA BUTTON ── */
+    .cta-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.65rem; border: 1px solid rgba(255,255,255,0.65); border-radius: 9999px; padding: 0.72em 1.9em; font-family: var(--body-font); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; text-decoration: none; overflow: hidden; backdrop-filter: blur(4px); transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease; }
+    .cta-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transform: translateX(-100%); transition: transform 0.7s ease; }
+    .cta-btn:hover { border-color: rgba(255,255,255,0.95); box-shadow: 0 0 20px rgba(255,255,255,0.15); transform: scale(1.05); }
+    .cta-btn:hover::before { transform: translateX(100%); }
+    .cta-btn:active { transform: scale(0.97); }
+    .cta-btn .amber-dot { width: 0.9rem; height: 0.9rem; background: #F4A460; border-radius: 9999px; position: relative; flex-shrink: 0; transition: background 0.4s, box-shadow 0.4s, transform 0.3s; }
+    .cta-btn:hover .amber-dot { background: #E35336; box-shadow: 0 0 10px rgba(227,83,54,0.65); transform: scale(1.15); }
+    .cta-btn:active .amber-dot { transform: scale(0.85); }
+    .amber-dot .ping { position: absolute; inset: 0; border-radius: 9999px; background: #F4A460; animation: dotping 2s cubic-bezier(0,0,0.2,1) infinite; opacity: 0; }
+    .cta-btn:hover .amber-dot .ping { opacity: 0.7; }
+    @keyframes dotping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+    .cta-btn-dark { border-color: rgba(0,0,0,0.5); color: var(--dark-accent); }
+    .cta-btn-dark::before { background: linear-gradient(90deg, transparent, rgba(0,0,0,0.04), transparent); }
+    .cta-btn-dark:hover { border-color: var(--dark-accent); box-shadow: 0 0 16px rgba(0,0,0,0.1); color: var(--black); }
+    .cta-btn-dark .amber-dot { background: #F4A460; }
+    .cta-btn-dark:hover .amber-dot { background: #E35336; box-shadow: 0 0 8px rgba(227,83,54,0.45); }
+    .cta-btn-dark .amber-dot .ping { background: #F4A460; }
+
+    /* ── SECTIONS ── */
+    .content-wrapper { max-width: 1646px; margin: 0 auto; padding-left: 2vw; padding-right: 2vw; }
+    .section-label { font-family: var(--meta-font); font-style: italic; font-size: 0.95rem; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.6rem; }
+    .section-heading { font-family: var(--heading-font); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.2em; letter-spacing: 0.01em; color: var(--black); margin-bottom: 1.4rem; }
+    .section-body { font-family: var(--body-font); font-weight: 300; font-size: 1rem; line-height: 1.8em; color: var(--black); }
+    .section-divider { width: 40px; height: 1px; background: var(--accent); margin: 1.5rem 0; }
+    .section-divider.center { margin: 1.5rem auto; }
+    .text-rotate-label { font-family: var(--meta-font); font-style: italic; font-size: 0.95rem; color: var(--accent); min-height: 1.6em; overflow: hidden; margin-bottom: 0.4rem; }
+    .text-rotate-label span { display: inline-block; transition: opacity 0.45s ease, transform 0.45s ease; }
+    .text-rotate-label span.tr-out { opacity: 0; transform: translateY(-8px); }
+    .text-rotate-label span.tr-in  { opacity: 0; transform: translateY(8px); }
+    .text-rotate-label span.tr-show { opacity: 1; transform: translateY(0); }
+
+    /* ── ABOUT ── */
+    .about-section { padding: 10vmax 0; background: #fff; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: center; }
+    .about-photo-wrap { position: relative; }
+    .about-photo-wrap img { width: 100%; height: 560px; object-fit: cover; object-position: center 15%; display: block; }
+    .about-photo-wrap::before { content: ''; position: absolute; top: -16px; left: -16px; width: 100%; height: 100%; border: 1px solid var(--light-accent); z-index: -1; }
+    .about-text .section-body p + p { margin-top: 1.2em; }
+
+    /* ── QUOTE ── */
+    .intro-quote { padding: 3.5vmax 0; background: var(--light-accent); text-align: center; }
+    .intro-quote blockquote { max-width: 860px; margin: 0 auto; }
+    .intro-quote blockquote p { font-family: var(--heading-font); font-style: italic; font-weight: 300; font-size: clamp(1.2rem, 2.2vw, 1.85rem); line-height: 1.6em; color: var(--dark-accent); }
+    .intro-quote cite { display: block; margin-top: 1.4rem; font-family: var(--body-font); font-style: normal; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+
+    /* ── SPECIALTY ── */
+    .specialty-section { padding: 10vmax 0; background: #fff; }
+    .specialty-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 6vw; align-items: start; }
+    .specialty-list { columns: 2; column-gap: 3rem; list-style: none; }
+    .specialty-list li { font-family: var(--body-font); font-weight: 300; font-size: 0.95rem; line-height: 1.8em; color: var(--black); padding: 0.25em 0; border-bottom: 1px solid var(--light-accent); break-inside: avoid; }
+    .specialty-list li::before { content: '—  '; color: var(--accent); font-size: 0.8em; }
+
+    /* ── SERVICES ── */
+    .services-section { padding: 10vmax 0; background: #fdf8f2; }
+    .services-header { text-align: center; margin-bottom: 5rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+    .service-card { text-align: center; padding: 2.5rem 2rem; background: #fff; border: 1px solid var(--light-accent); }
+    .service-icon { width: 90px; height: 90px; margin: 0 auto 1.8rem; }
+    .service-icon svg { width: 100%; height: 100%; }
+    .service-title { font-family: var(--heading-font); font-weight: 400; font-size: 1.5rem; line-height: 1.3em; margin-bottom: 0.8rem; color: var(--black); }
+    .service-desc { font-family: var(--body-font); font-weight: 300; font-size: 0.88rem; line-height: 1.8em; color: #7a5a48; }
+    .service-link { display: inline-block; margin-top: 1.2rem; font-family: var(--body-font); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dark-accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 0.1em; transition: color 0.2s; }
+    .service-link:hover { color: var(--accent); }
+
+    /* ── IN-PERSON NOTE ── */
+    .in-person-note { margin-top: 4rem; padding: 2.5rem 3rem; background: #fff; border-left: 3px solid var(--primary); border: 1px solid var(--light-accent); border-left: 3px solid var(--primary); }
+    .in-person-note-inner { max-width: 820px; }
+    .in-person-heading { font-family: var(--heading-font); font-weight: 400; font-size: 1.35rem; color: var(--black); margin-bottom: 0.8rem; letter-spacing: 0.01em; }
+    .in-person-body { font-family: var(--body-font); font-weight: 300; font-size: 0.95rem; line-height: 1.85em; color: #6b4028; }
+
+    /* ── DARK SECTION ── */
+    .dark-section { position: relative; min-height: 60vh; display: flex; align-items: center; overflow: hidden; }
+    .dark-section-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #3d1808 0%, #52200d 30%, #3a1407 60%, #4a1d0b 100%); }
+    .dark-section-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(160,82,45,0.15) 100%); }
+    .dark-section-content { position: relative; z-index: 2; width: 100%; padding: 10vmax 0; }
+    .dark-section-inner { max-width: 700px; }
+    .dark-section .section-label { color: rgba(255,255,255,0.6); }
+    .dark-section .section-heading { color: #fff; }
+    .dark-section .section-body { color: rgba(255,255,255,0.82); }
+
+    /* ── PHONE STRIP ── */
+    .phone-strip { padding: 6vmax 0; background: var(--black); text-align: center; }
+    .phone-strip-label { font-family: var(--meta-font); font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.55); margin-bottom: 0.8rem; }
+    .phone-number-display { display: inline-block; font-family: var(--heading-font); font-weight: 400; font-size: clamp(2rem, 4.5vw, 3.8rem); color: var(--accent); letter-spacing: 0.04em; text-decoration: none; line-height: 1.1em; margin-bottom: 1.4rem; transition: color 0.25s; }
+    .phone-number-display:hover { color: #fff; }
+    .phone-strip-body { font-family: var(--body-font); font-weight: 300; font-size: 0.92rem; line-height: 1.85em; color: rgba(255,255,255,0.65); max-width: 520px; margin: 0 auto; }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 10vmax 0; background: #fff; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6vw; align-items: start; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-family: var(--body-font); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark-accent); margin-bottom: 0.4rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; font-family: var(--body-font); font-weight: 300; font-size: 0.95rem; line-height: 1.6em; color: var(--black); background: transparent; border: 1px solid #ccc; border-radius: 5px; padding: 10px; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--dark-accent); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .btn-submit { display: inline-block; margin-top: 0.5rem; font-family: var(--body-font); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: var(--dark-accent); border: none; padding: 0.9em 2.4em; cursor: pointer; transition: background 0.25s; border-radius: 2px; }
+    .btn-submit:hover { background: #E35336; }
+    .contact-info-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+    .contact-info-item .label { font-family: var(--body-font); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); min-width: 70px; }
+    .contact-info-item .value { font-family: var(--body-font); font-weight: 300; font-size: 0.95rem; line-height: 1.6em; color: var(--black); }
+
+    /* ── FAQ ── */
+    .faq-section { padding: 10vmax 0; background: #fff; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6vw; align-items: start; }
+    .faq-sticky { position: sticky; top: 90px; }
+    .faq-contact-note { margin-top: 2rem; font-family: var(--body-font); font-size: 0.85rem; line-height: 1.8em; color: #7a5a48; }
+    .faq-contact-note a { color: var(--dark-accent); text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s; }
+    .faq-contact-note a:hover { color: var(--primary); }
+    .faq-accordion { display: flex; flex-direction: column; border: 1px solid var(--light-accent); border-radius: 3px; overflow: hidden; background: #fff; box-shadow: 0 4px 24px rgba(160,82,45,0.06), 0 1px 4px rgba(160,82,45,0.04); }
+    .faq-item { border-bottom: 1px solid var(--light-accent); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-trigger { width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 1.25rem 1.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-family: var(--heading-font); font-weight: 400; font-size: 1.12rem; line-height: 1.4em; color: var(--black); position: relative; transition: background 0.22s, color 0.22s; }
+    .faq-trigger::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--primary); transform: scaleY(0); transform-origin: top; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+    .faq-trigger:hover { background: #fdf8f2; }
+    .faq-trigger[aria-expanded="true"] { background: #fdf8f2; color: var(--dark-accent); }
+    .faq-trigger[aria-expanded="true"]::before { transform: scaleY(1); }
+    .faq-chevron { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--accent); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), color 0.22s; }
+    .faq-trigger[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); color: var(--primary); }
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1); }
+    .faq-content-inner { padding: 0 1.6rem 1.4rem 1.6rem; font-family: var(--body-font); font-weight: 300; font-size: 0.93rem; line-height: 1.85em; color: #6b4028; border-left: 3px solid var(--primary); }
+
+    /* ── FOOTER ── */
+    footer { background: #1e0d06; padding: 5rem 0 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-map-canvas { width: 100%; height: 220px; display: block; border-radius: 2px; overflow: hidden; }
+    .footer-map-canvas .leaflet-control-attribution { background: rgba(0,0,0,0.45) !important; color: rgba(255,255,255,0.35) !important; font-size: 0.65rem !important; }
+    .footer-map-canvas .leaflet-control-attribution a { color: rgba(255,255,255,0.45) !important; }
+    .footer-col-title { font-family: var(--heading-font); font-weight: 400; font-size: 1.2rem; color: #fff; margin-bottom: 1.2rem; }
+    .footer-col p, .footer-col address { font-family: var(--body-font); font-weight: 300; font-size: 0.88rem; line-height: 1.8em; color: rgba(255,255,255,0.7); font-style: normal; }
+    .footer-nav { list-style: none; }
+    .footer-nav li + li { margin-top: 0.4rem; }
+    .footer-nav a { font-family: var(--body-font); font-weight: 300; font-size: 0.88rem; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-bottom p { font-family: var(--body-font); font-weight: 300; font-size: 0.75rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); }
+    .footer-site-name { font-family: var(--heading-font); font-weight: 400; font-size: 1.4rem; color: rgba(255,255,255,0.9); letter-spacing: 0.03em; }
+
+    /* ── RESPONSIVE — tablet ── */
+    @media (max-width: 991px) {
+      html { font-size: min(15px, 16px); }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-photo-wrap img { height: auto; max-height: 640px; object-fit: contain; object-position: center; background: #f5f0eb; }
+      .specialty-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .specialty-list { columns: 1; }
+      .services-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .dark-section-inner { max-width: 100%; }
+      .faq-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .faq-sticky { position: static; }
+      nav { gap: 1rem; }
+      nav a { font-size: 0.75rem; }
+      .in-person-note { padding: 2rem 1.5rem; }
+    }
+
+    /* ── RESPONSIVE — mobile ── */
+    @media (max-width: 768px) {
+      html { font-size: 14px; }
+      .hamburger { display: flex; }
+      nav { display: none; }
+      .desktop-lang { display: none; }
+      .nav-book-btn { display: none; }
+      .content-wrapper { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .hero-content { padding: 6vmax 1.5rem; }
+      .hero-title { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+      .hero-eyebrow { font-size: 0.9rem; }
+      .hero-subtitle { font-size: 0.78rem; letter-spacing: 0.08em; }
+      .about-photo-wrap img { height: auto; max-height: 420px; object-fit: contain; }
+      .about-photo-wrap::before { display: none; }
+      .section-heading { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+      .services-header { margin-bottom: 2.5rem; }
+      .in-person-note { padding: 1.5rem 1.2rem; margin-top: 2.5rem; }
+      .contact-grid .form-group + .form-group { margin-top: 0; }
+      .names-row { grid-template-columns: 1fr !important; }
+      .phone-strip { padding: 4rem 1.2rem; }
+      .phone-strip-body { font-size: 0.88rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+      .footer-grid { gap: 2rem; }
+      .intro-quote blockquote { font-size: clamp(1rem, 4.5vw, 1.4rem); }
+      .dark-section-content { padding: 7vmax 0; }
+      .services-section, .faq-section, .contact-section, .about-section, .specialty-section { padding: 7vmax 0; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.2rem; }
+      .site-title { font-size: 1.05rem; }
+      .phone-number-display { font-size: 1.9rem; letter-spacing: 0.02em; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="nav-inner">
+      <a href="#" class="site-title">Ganna Shekunova</a>
+      <nav>
+        <a href="#about" data-i18n="nav_about">About</a>
+        <a href="#faq" data-i18n="nav_faqs">FAQs</a>
+        <a href="#services" data-i18n="nav_services">Services</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
+        <a href="#contact" class="nav-book-btn" style="border:1px solid #A0522D; padding:0.45em 1.1em; font-size:0.75rem; letter-spacing:0.1em; border-radius:9999px; color:#A0522D;" data-i18n="nav_book">Book a Call</a>
+      </nav>
+      <div class="lang-switcher desktop-lang">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">UA</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+      </div>
+      <button class="hamburger" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── MOBILE MENU ── -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mob-lang">
+      <button class="mob-lang-btn active" data-lang="en" onclick="setLang('en');closeMobileMenu()">EN</button>
+      <span class="mob-lang-sep">|</span>
+      <button class="mob-lang-btn" data-lang="uk" onclick="setLang('uk');closeMobileMenu()">UA</button>
+      <span class="mob-lang-sep">|</span>
+      <button class="mob-lang-btn" data-lang="ru" onclick="setLang('ru');closeMobileMenu()">RU</button>
+    </div>
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#faq" data-i18n="nav_faqs">FAQs</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+    <a href="#contact" class="mob-book" data-i18n="nav_book">Book a Call</a>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <svg style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="wood" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+            <feTurbulence type="turbulence" baseFrequency="0.012 0.9" numOctaves="4" seed="5" result="turbOut"/>
+            <feComponentTransfer in="turbOut" result="grain">
+              <feFuncR type="linear" slope="3" intercept="-0.4"/>
+              <feFuncG type="linear" slope="2.5" intercept="-0.3"/>
+              <feFuncB type="linear" slope="1.5" intercept="-0.2"/>
+            </feComponentTransfer>
+            <feColorMatrix type="matrix" in="grain" values="0.38 0 0 0 0.38 0.18 0 0 0 0.20 0.08 0 0 0 0.10 0 0 0 1 0" result="woodColor"/>
+          </filter>
+        </defs>
+        <rect width="100%" height="100%" filter="url(#wood)"/>
+        <radialGradient id="vignette" cx="50%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+        </radialGradient>
+        <rect width="100%" height="100%" fill="url(#vignette)"/>
+        <linearGradient id="warmTint" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="rgba(120,60,20,0.2)"/>
+          <stop offset="50%" stop-color="rgba(80,35,10,0.1)"/>
+          <stop offset="100%" stop-color="rgba(40,20,5,0.25)"/>
+        </linearGradient>
+        <rect width="100%" height="100%" fill="url(#warmTint)"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-i18n="hero_eyebrow">Psychology and Psychoanalysis</p>
+      <h1 class="hero-title">Ganna Shekunova</h1>
+      <p class="hero-subtitle"><span id="typewriter"></span><span class="typewriter-cursor"></span></p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="#contact" class="cta-btn">
+          <span data-i18n="hero_cta1">Book a Consultation</span>
+          <span class="amber-dot"><span class="ping"></span></span>
+        </a>
+        <a href="#about" class="cta-btn">
+          <span data-i18n="hero_cta2">Learn More</span>
+          <span class="amber-dot"><span class="ping"></span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="about-section" id="about">
+    <div class="content-wrapper">
+      <div class="about-grid">
+        <div class="about-photo-wrap">
+          <img src="brand_assets/Gemini_Generated_Image_soyeznsoyeznsoye.png" alt="Ganna Shekunova" />
+        </div>
+        <div class="about-text">
+          <div class="text-rotate-label"><span class="tr-show" id="rotate-label">Grounded in Psychoanalysis</span></div>
+          <h2 class="section-heading" data-i18n="about_heading">About Me</h2>
+          <div class="section-divider"></div>
+          <div class="section-body">
+            <p data-i18n="about_p1">Ganna Shekunova is a psychoanalytically oriented practitioner based in Ireland. She holds a Master's degree in Psychology from the Interregional Academy of Personnel Management, a degree in Practical Psychology and Psychoanalysis from the International Institute of Deep Psychology in Kyiv, and an earlier degree in Physiology and Biology from Shevchenko University. In Ireland, she has also completed QQI studies in Intellectual Disability Studies, Nutrition, Sports Therapy &amp; Injury Management, and Animal Care.</p>
+            <p style="margin-top:1.2em;" data-i18n="about_p2">My work has developed across private psychoanalytic practice, child-focused educational work, and social care. From 2016 to 2022 I ran Smile Children's Studio in Kyiv, working with children, teenagers, and adults. Since September 2024 I have worked in Autism and Disability Services as a Social Care Worker in Ireland, supporting individuals in daily life, emotional wellbeing, and structured care.</p>
+            <p style="margin-top:1.2em;" data-i18n="about_p3">My clinical and academic interests centre on childhood, adolescence, and adulthood — especially where distress appears through anxiety, conflict, repetition, withdrawal, or relational difficulty. My work is grounded in psychoanalytic practice, drawing on the clinical tradition built through generations of work with children, adolescents, and institutions. A psychoanalytic orientation informs not only how I listen, but how I understand what begins to emerge in sessions.</p>
+            <p style="margin-top:1.2em;" data-i18n-html="about_p4">I am a member of the <a href="https://pa-uap.org/ru/experts/shekunova-anna-vladislavovna/" target="_blank" rel="noopener" style="color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;">Ukrainian Association of Psychoanalysis (UAP)</a> and hold collective membership in <a href="https://ucpp.org/dlya-spetsialistiv/ucpp" target="_blank" rel="noopener" style="color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;">ЄКПП — European Federation of Psychoanalytic Psychotherapy (UCPP)</a>.</p>
+          </div>
+          <div class="section-divider" style="margin-top:2rem;"></div>
+          <a href="#contact" class="cta-btn cta-btn-dark" style="margin-top:1.5rem;">
+            <span data-i18n="about_cta">Work With Me</span>
+            <span class="amber-dot"><span class="ping"></span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUOTE ── -->
+  <section class="intro-quote" id="intro">
+    <div class="content-wrapper">
+      <blockquote>
+        <p data-i18n="quote_text">'I work in accordance with the Ethical Principles of Psychologists and the Code of Conduct. Confidentiality is treated with the utmost seriousness: what is brought to the sessions remains within the therapeutic setting. No exceptions.'</p>
+        <cite data-i18n="quote_cite">— Ganna Shekunova</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="faq-section" id="faq">
+    <div class="content-wrapper">
+      <div class="faq-grid">
+        <div class="faq-sticky">
+          <p class="section-label" data-i18n="faq_label">Questions &amp; Answers</p>
+          <h2 class="section-heading" data-i18n-html="faq_heading">Things People<br>Often Ask</h2>
+          <div class="section-divider"></div>
+          <p class="section-body" style="font-size:0.9rem; max-width:280px;" data-i18n="faq_sub">These are the questions that most often come before a first contact. If yours is not here, reaching out is straightforward — and welcome.</p>
+          <p class="faq-contact-note" data-i18n-html="faq_note">Something else on your mind?<br><a href="#contact">Send a short message</a> — no preparation needed.</p>
+        </div>
+        <div class="faq-accordion" id="faq-accordion" role="list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section class="services-section" id="services">
+    <div class="content-wrapper">
+      <div class="services-header">
+        <p class="section-label" data-i18n="services_label">What I Offer</p>
+        <h2 class="section-heading" data-i18n="services_heading">Individual Psychoanalytic Therapy</h2>
+        <div class="section-divider center"></div>
+        <p class="section-body" style="max-width:580px; margin:0 auto; font-size:0.95rem;" data-i18n="services_sub">Each session is shaped by what you bring. Below are the primary contexts in which I work.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="45" cy="20" r="8" stroke="#393739" stroke-width="1.5"/>
+              <path d="M20 52 Q45 30 70 52" stroke="#393739" stroke-width="1.5" fill="none"/>
+              <line x1="45" y1="52" x2="45" y2="72" stroke="#393739" stroke-width="1.5"/>
+              <path d="M38 72 Q45 78 52 72" stroke="#393739" stroke-width="1.5" fill="none"/>
+              <line x1="45" y1="28" x2="45" y2="48" stroke="#393739" stroke-width="1.5"/>
+              <line x1="45" y1="34" x2="36" y2="42" stroke="#393739" stroke-width="1.5"/>
+              <line x1="45" y1="34" x2="54" y2="42" stroke="#393739" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3 class="service-title" data-i18n="service1_title">Individual Therapy</h3>
+          <p class="service-desc" data-i18n="service1_desc">One-on-one psychoanalytic sessions for adults. A space to speak freely — to explore what repeats, what confuses, or what simply feels too heavy to carry alone.</p>
+          <a href="#contact" class="service-link" data-i18n="service1_link">Get in Touch</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="35" cy="22" r="6" stroke="#393739" stroke-width="1.5"/>
+              <line x1="35" y1="28" x2="35" y2="50" stroke="#393739" stroke-width="1.5"/>
+              <line x1="35" y1="35" x2="27" y2="43" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="35" y1="35" x2="43" y2="43" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M35 50 L28 65" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M35 50 L42 65" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="58" cy="18" r="7" stroke="#393739" stroke-width="1.5"/>
+              <line x1="58" y1="25" x2="58" y2="52" stroke="#393739" stroke-width="1.5"/>
+              <line x1="58" y1="33" x2="48" y2="42" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="58" y1="33" x2="68" y2="42" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M58 52 L50 68" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M58 52 L66 68" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title" data-i18n="service2_title">Child &amp; Adolescent Work</h3>
+          <p class="service-desc" data-i18n="service2_desc">Specialised work with children, teenagers, and young adults — drawing on deep experience in educational and social care settings across Kyiv and Ireland.</p>
+          <a href="#contact" class="service-link" data-i18n="service2_link">Get in Touch</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="22" width="54" height="36" rx="3" stroke="#393739" stroke-width="1.5"/>
+              <circle cx="45" cy="36" r="6" stroke="#393739" stroke-width="1.2"/>
+              <line x1="40" y1="34" x2="40" y2="34.1" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="50" y1="34" x2="50" y2="34.1" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M41 39 Q45 42 49 39" stroke="#393739" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M12 58 L78 58" stroke="#393739" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 58 Q14 62 18 62 L72 62 Q76 62 78 58" stroke="#393739" stroke-width="1.2" fill="none"/>
+            </svg>
+          </div>
+          <h3 class="service-title" data-i18n="service3_title">Online Sessions</h3>
+          <p class="service-desc" data-i18n="service3_desc">Sessions offered online and can be arranged within a regular weekly rhythm that fits around work, study, or family life. Available throughout Ireland.</p>
+          <a href="#contact" class="service-link" data-i18n="service3_link">Get in Touch</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── DARK SECTION ── -->
+  <section class="dark-section" id="approach">
+    <div class="dark-section-bg"></div>
+    <div class="dark-section-overlay"></div>
+    <div class="dark-section-content">
+      <div class="content-wrapper">
+        <div class="dark-section-inner">
+          <p class="section-label" data-i18n="dark_label">My Philosophy</p>
+          <h2 class="section-heading" data-i18n-html="dark_heading">A Psychoanalytic,<br>Relational Approach</h2>
+          <div class="section-divider"></div>
+          <p class="section-body" style="color:rgba(255,255,255,0.82);" data-i18n="dark_body">You do not have to be in crisis to begin therapy. People often come because something feels repetitive, difficult, painful, or simply hard to understand. The first contact is a chance to see whether the work feels right for you — you do not need to decide everything immediately.</p>
+          <a href="#contact" class="cta-btn" style="margin-top:2rem;">
+            <span data-i18n="dark_cta">Begin a Conversation</span>
+            <span class="amber-dot"><span class="ping"></span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHONE STRIP ── -->
+  <section class="phone-strip" id="phone">
+    <div class="content-wrapper">
+      <p class="phone-strip-label" data-i18n="phone_label">Prefer to call?</p>
+      <a href="tel:+353831134629" class="phone-number-display">+353 (0)831 134 629</a>
+      <p class="phone-strip-body" data-i18n="phone_body">Ganna actively encourages people to call — it is the preferred and most direct way to make first contact. She is not hard on anyone, and no one is made to feel that they are intruding or that their question is too small. Please feel free to reach out.</p>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section class="contact-section" id="contact">
+    <div class="content-wrapper">
+      <div style="text-align:center; margin-bottom:4rem;">
+        <p class="section-label" data-i18n="contact_label">Get in Touch</p>
+        <h2 class="section-heading" data-i18n="contact_heading">Contact Me for an Appointment</h2>
+        <div class="section-divider center"></div>
+        <p class="section-body" style="max-width:520px; margin:0 auto; font-size:0.95rem;" data-i18n="contact_sub">I'd be glad to hear from you. Fill out the form below and I will respond within one to two business days. Fees are discussed openly and respectfully — the right fee can be discussed in a brief introductory call.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-left">
+          <p class="section-label" data-i18n="contact_details_label">Details</p>
+          <h3 style="font-family:var(--heading-font); font-weight:400; font-size:1.6rem; margin-bottom:1.5rem;" data-i18n="contact_details_heading">Reach Out Directly</h3>
+          <div class="section-divider"></div>
+          <div style="margin-top:1.8rem;">
+            <div class="contact-info-item">
+              <span class="label" data-i18n="label_phone">Phone</span>
+              <span class="value"><a href="tel:+353831134629" style="color:inherit; text-decoration:none;">+353 (0)831 134 629</a></span>
+            </div>
+            <div class="contact-info-item">
+              <span class="label" data-i18n="label_email">Email</span>
+              <span class="value">gannashnova@gmail.com</span>
+            </div>
+            <div class="contact-info-item">
+              <span class="label" data-i18n="label_location">Location</span>
+              <span class="value">Waterford, Ireland</span>
+            </div>
+          </div>
+          <div style="margin-top:2.5rem;">
+            <p style="font-family:var(--body-font); font-weight:300; font-size:0.88rem; line-height:1.8em; color:#555; max-width:320px;" data-i18n="contact_online_note">Online sessions are available and can be arranged within a regular weekly rhythm that fits around work, study, or family life.</p>
+          </div>
+        </div>
+        <div class="contact-right">
+          <form class="contact-form" onsubmit="return false;">
+            <div class="names-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div class="form-group">
+                <label for="fname" data-i18n="form_fname_label">First Name</label>
+                <input type="text" id="fname" name="fname" data-i18n-placeholder="form_fname_ph" placeholder="Your first name">
+              </div>
+              <div class="form-group">
+                <label for="lname" data-i18n="form_lname_label">Last Name</label>
+                <input type="text" id="lname" name="lname" data-i18n-placeholder="form_lname_ph" placeholder="Your last name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" data-i18n="form_email_label">Email Address</label>
+              <input type="email" id="email" name="email" data-i18n-placeholder="form_email_ph" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label for="phone" data-i18n="form_phone_label">Phone Number</label>
+              <input type="tel" id="phone" name="phone" data-i18n-placeholder="form_phone_ph" placeholder="+353 …">
+            </div>
+            <div class="form-group">
+              <label for="service" data-i18n="form_service_label">Interested In</label>
+              <select id="service" name="service">
+                <option value="" data-i18n-opt="form_service_default">Select a service…</option>
+                <option data-i18n-opt="form_opt1">Individual Therapy</option>
+                <option data-i18n-opt="form_opt2">Child &amp; Adolescent Work</option>
+                <option data-i18n-opt="form_opt3">Online Sessions</option>
+                <option data-i18n-opt="form_opt4">Introductory Call</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message" data-i18n="form_msg_label">Message</label>
+              <textarea id="message" name="message" data-i18n-placeholder="form_msg_ph" placeholder="Share a little about what brings you here (optional)…"></textarea>
+            </div>
+            <button type="submit" class="btn-submit" data-i18n="form_submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="content-wrapper">
+      <div class="footer-grid">
+        <div class="footer-map">
+          <div id="footer-map-canvas" class="footer-map-canvas"></div>
+          <p style="font-family:var(--body-font); font-weight:300; font-size:0.78rem; color:rgba(255,255,255,0.4); margin-top:0.7rem; letter-spacing:0.05em;" data-i18n="footer_location">Waterford, Ireland</p>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Ganna Shekunova</p>
+          <address>
+            <p data-i18n="hero_eyebrow">Psychoanalytically Oriented Practitioner</p>
+            <p data-i18n="footer_location">Waterford, Ireland</p>
+            <p style="margin-top:0.8rem;"><a href="tel:+353831134629" style="color:inherit;text-decoration:none;">+353 (0)831 134 629</a></p>
+            <p>gannashnova@gmail.com</p>
+          </address>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title" data-i18n="footer_nav_title">Navigation</p>
+          <ul class="footer-nav">
+            <li><a href="#about" data-i18n="footer_nav_about">About</a></li>
+            <li><a href="#faq" data-i18n="footer_nav_faqs">FAQs</a></li>
+            <li><a href="#services" data-i18n="footer_nav_services">Services</a></li>
+            <li><a href="#approach" data-i18n="footer_nav_approach">My Approach</a></li>
+            <li><a href="#contact" data-i18n="footer_nav_contact">Contact &amp; Booking</a></li>
+          </ul>
+          <div style="margin-top:2rem;">
+            <p class="footer-col-title" style="font-size:1rem;" data-i18n="footer_fees_title">Fees &amp; Access</p>
+            <p style="font-size:0.82rem;" data-i18n="footer_fees_text">Fees are discussed openly and respectfully. Clear pricing, with options where appropriate. The right fee can be discussed in a brief introductory call.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-memberships" style="display:flex; align-items:center; gap:2rem; padding:2rem 0 1.5rem; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap;">
+        <p style="font-family:var(--body-font); font-weight:300; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.35);" data-i18n="footer_member_label">Professional Membership</p>
+        <a href="https://pa-uap.org/ru/experts/shekunova-anna-vladislavovna/" target="_blank" rel="noopener" style="opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+          <img src="brand_assets/uap-logo.png" alt="Українська асоціація психоаналізу (УАП)" style="height:48px; width:auto; display:block; background:rgba(255,255,255,0.92); padding:6px 10px; border-radius:4px;">
+        </a>
+        <a href="https://ucpp.org/dlya-spetsialistiv/ucpp" target="_blank" rel="noopener" style="opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+          <img src="brand_assets/ecpp-logo.png" alt="ЄКПП / UCPP" style="height:48px; width:auto; display:block; background:rgba(255,255,255,0.92); padding:6px 10px; border-radius:4px;">
+        </a>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-site-name">Ganna Shekunova</span>
+        <p data-i18n="footer_copyright">&copy; 2026 Ganna Shekunova &middot; All rights reserved</p>
+        <p data-i18n="footer_location">Waterford, Ireland</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  // ─── TRANSLATIONS ───────────────────────────────────────────────
+  const T = {
+    en: {
+      page_title: "Ganna Shekunova | Psychoanalyst & Therapist",
+      nav_about: "About", nav_faqs: "FAQs", nav_services: "Services", nav_contact: "Contact", nav_book: "Book a Call",
+      hero_eyebrow: "Psychology and Psychoanalysis",
+      typewriter_words: ["Individual Psychoanalytic Therapy","Child & Adolescent Work","In-Person & Online Sessions","Trauma & Anxiety Support","Pratique à Plusieurs"],
+      hero_cta1: "Book a Consultation", hero_cta2: "Learn More",
+      about_rotate: ["Grounded in Psychoanalytic Practice","Working with Children & Adults","Based in Waterford, Ireland","Member of UAP & ЄКПП","Ethical Practice, Always"],
+      about_heading: "About Me",
+      about_p1: "Ganna Shekunova is a psychoanalytically oriented practitioner based in Ireland. She holds a Master's degree in Psychology from the Interregional Academy of Personnel Management, a degree in Practical Psychology and Psychoanalysis from the International Institute of Deep Psychology in Kyiv, and an earlier degree in Physiology and Biology from Shevchenko University. In Ireland, she has also completed QQI studies in Intellectual Disability Studies, Nutrition, Sports Therapy & Injury Management, and Animal Care. She is currently completing a Master's in Clinical Psychology with a focus on therapeutic mediation through art at Université Côte d'Azur, Nice.",
+      about_p2: "Over the past eight years, Ganna has worked with children, adolescents, and adults — through private psychoanalytic practice, within psychological clinics, and as a yoga instructor. She currently works with children and adolescents within a psychoanalytic framework, in a pratique à plusieurs setting, under supervision. Since September 2024, she has also worked in Autism and Disability Services as a Social Care Worker in Ireland, supporting individuals in daily life, emotional wellbeing, and structured care.",
+      about_p3: "Her clinical and academic interests centre on childhood, adolescence, and adulthood — especially where distress appears through anxiety, conflict, repetition, withdrawal, or relational difficulty. Her work is grounded in psychoanalytic practice, drawing on the clinical tradition built through generations of work with children, adolescents, and institutions. A psychoanalytic orientation informs not only how she listens, but how she understands what begins to emerge in sessions.",
+      about_p4: "Ganna is a member of the <a href='https://pa-uap.org/ru/experts/shekunova-anna-vladislavovna/' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>Ukrainian Association of Psychoanalysis (UAP)</a> and holds collective membership in <a href='https://ucpp.org/dlya-spetsialistiv/ucpp' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>ЄКПП — European Federation of Psychoanalytic Psychotherapy (UCPP)</a>.",
+      about_cta: "Work With Me",
+      quote_text: "\u2018I work in accordance with the Ethical Principles of Psychologists and the Code of Conduct. Confidentiality is treated with the utmost seriousness: what is brought to the sessions remains within the therapeutic setting. No exceptions.\u2019",
+      quote_cite: "\u2014 Ganna Shekunova",
+      faq_label: "Questions & Answers", faq_heading: "Things People<br>Often Ask",
+      faq_sub: "These are the questions that most often come before a first contact. If yours is not here, reaching out is straightforward — and welcome.",
+      faq_note: "Something else on your mind?<br><a href='#contact'>Send a short message</a> — no preparation needed.",
+      faq: [
+        {q:"What kinds of concerns do you work with?",a:"I work with adolescents, young adults, and adults across a wide range of concerns — including anxiety and repetitive distress, ADHD and attention difficulties, depression and low mood, autism and neurodiversity, trauma, grief and loss, relational difficulty, identity and questions of self, life transitions, burnout, and psychosomatic concerns. If you do not see your specific concern listed, please reach out. The first contact is simply a chance to see whether the work feels right for you."},
+        {q:"How do I know if you're the right therapist for me?",a:"You don't need to know in advance. The first session is a chance to see whether the work feels right — you are not committing to anything beyond that initial meeting. Many people find that the question of fit becomes clearer once they have simply begun."},
+        {q:"I've never done therapy before — what should I expect?",a:"You don't need to arrive with the right words, a clear story, or a finished explanation. We begin from where you are. Sessions are not tests. Confusion, hesitation, silence, and not knowing where to start are all entirely valid — and often, these are the most important starting points."},
+        {q:"Do I have to be in crisis to come to therapy?",a:"Not at all. Many people come to therapy because something feels repetitive, difficult, painful, or simply hard to understand — not because they are in acute distress. You do not have to reach a breaking point before reaching out. Seeking support is not a sign that things have gone wrong — it is often a sign that something wants to change."},
+        {q:"How much do sessions cost?",a:"Fees are discussed openly and respectfully. I offer clear pricing, and where appropriate, I am glad to discuss an arrangement that feels manageable for your circumstances. There is no need to feel that money is a difficult subject — the right fee can be talked through in a brief introductory call."},
+        {q:"My teenager won't open up — can you still work with them?",a:"Teenagers don't need to arrive ready to open up. The work begins by making space for their own way of entering — whether that means speaking, resisting, withdrawing, or quietly testing what is safe. Resistance itself is part of the work, not an obstacle to it. Many young people who initially refused therapy find their footing when the setting is genuinely theirs."},
+        {q:"I tried therapy before and it didn't help.",a:"That experience is worth taking seriously, and it is entirely fair to name it. A previous therapy may not have been the right fit, the right timing, or the right approach for you. Many people return to therapy after feeling disappointed elsewhere and find that something genuinely different becomes possible the second time."},
+        {q:"What if I can't find the words for what I'm feeling?",a:"You don't need to. Confusion, contradiction, and not knowing where to begin are all valid starting points. The things that are hardest to put into words are often precisely what therapy is for. You can come as you are — there is no performance required."},
+        {q:"Do you offer online sessions?",a:"Yes. Online sessions are available and can be arranged within a regular weekly rhythm that fits around work, study, or family life. Online work can still offer depth, consistency, and a real therapeutic space — while making therapy more accessible wherever you are in Ireland or abroad."},
+        {q:"How do you protect confidentiality?",a:"Ganna Shekunova works in accordance with the Ethical Principles of Psychologists and the Code of Conduct. Confidentiality is treated with the utmost seriousness: what is brought to the sessions remains within the therapeutic setting. No exceptions."}
+      ],
+      services_label: "What I Offer", services_heading: "Individual Psychoanalytic Therapy",
+      services_sub: "Each session is shaped by what you bring. Below are the primary contexts in which I work.",
+      service1_title: "Individual Therapy", service1_desc: "One-on-one psychoanalytic sessions for adults. A space to speak freely — to explore what repeats, what confuses, or what simply feels too heavy to carry alone.", service1_link: "Get in Touch",
+      service2_title: "Child & Adolescent Work", service2_desc: "Specialised work with children, teenagers, and young adults — drawing on deep experience in educational and social care settings across Kyiv and Ireland.", service2_link: "Get in Touch",
+      service3_title: "In-Person & Online Sessions", service3_desc: "Sessions are offered both in person and online, and can be arranged within a regular weekly rhythm that fits around work, study, or family life.", service3_link: "Get in Touch",
+      dark_label: "The Therapeutic Setting", dark_heading: "On Working<br>In Person",
+      dark_body: "Ganna believes that in-person work is the preferred and most meaningful way to enter the therapeutic relationship — and that it is necessary for everyone who can manage it. Meeting in the same room, week after week, creates conditions for connection and depth that are genuinely different from any screen. She warmly encourages all who are able to consider in-person sessions first. No one is made to feel that their circumstances stand in the way.",
+      dark_cta: "Begin a Conversation",
+      phone_label: "Prefer to call?", phone_heading: "+353 (0)831 134 629",
+      phone_body: "Ganna actively encourages people to call — it is the preferred and most direct way to make first contact. She is not hard on anyone, and no one is made to feel that they are intruding or that their question is too small. Please feel free to reach out.",
+      contact_label: "Get in Touch", contact_heading: "Contact Me for an Appointment",
+      contact_sub: "Fill out the form below and Ganna will respond within one to two business days. Fees are discussed openly and respectfully — the right fee can be discussed in a brief introductory call.",
+      contact_details_label: "Details", contact_details_heading: "Reach Out Directly",
+      contact_online_note: "Online sessions are available and can be arranged within a regular weekly rhythm that fits around work, study, or family life.",
+      label_phone: "Phone", label_email: "Email", label_location: "Location",
+      form_fname_label: "First Name", form_fname_ph: "Your first name",
+      form_lname_label: "Last Name", form_lname_ph: "Your last name",
+      form_email_label: "Email Address", form_email_ph: "your@email.com",
+      form_phone_label: "Phone Number", form_phone_ph: "+353 …",
+      form_service_label: "Interested In", form_service_default: "Select a service…",
+      form_opt1: "Individual Therapy", form_opt2: "Child & Adolescent Work", form_opt3: "In-Person & Online Sessions", form_opt4: "Introductory Call",
+      form_msg_label: "Message", form_msg_ph: "Share a little about what brings you here (optional)…",
+      form_submit: "Send Message",
+      footer_member_label: "Professional Membership",
+      footer_nav_title: "Navigation", footer_nav_about: "About", footer_nav_faqs: "FAQs", footer_nav_services: "Services", footer_nav_approach: "On Working In Person", footer_nav_contact: "Contact & Booking",
+      footer_fees_title: "Fees & Access", footer_fees_text: "Fees are discussed openly and respectfully. Clear pricing, with options where appropriate. The right fee can be discussed in a brief introductory call.",
+      footer_location: "Waterford, Ireland", footer_copyright: "\u00a9 2026 Ganna Shekunova \u00b7 All rights reserved"
+    },
+    uk: {
+      page_title: "Ганна Шекунова | Психоаналітик & Терапевт",
+      nav_about: "Про мене", nav_faqs: "Питання", nav_services: "Послуги", nav_contact: "Контакт", nav_book: "Записатися",
+      hero_eyebrow: "Психологія та психоаналіз",
+      typewriter_words: ["Індивідуальна Психоаналітична Терапія","Робота з Дітьми та Підлітками","Особисті та Онлайн-сесії","Підтримка при Травмі та Тривозі","Pratique à Plusieurs"],
+      hero_cta1: "Записатися на Консультацію", hero_cta2: "Дізнатися Більше",
+      about_rotate: ["Заснована на Психоаналітичній Практиці","Робота з Дітьми та Дорослими","Базується у Вотерфорді, Ірландія","Член УАП та ЄКПП","Етична Практика, Завжди"],
+      about_heading: "Про Мене",
+      about_p1: "Ганна Шекунова — психолог психоаналітичної орієнтації, яка живе та працює в Ірландії. Має ступінь магістра з психології Міжрегіональної академії управління персоналом, диплом з практичної психології та психоаналізу Міжнародного інституту глибинної психології (Київ), а також диплом з фізіології та біології університету ім. Шевченка. В Ірландії завершила курси QQI з вивчення інтелектуальних вад, нутриціології, спортивної терапії та догляду за тваринами. Наразі завершує магістратуру з клінічної психології з акцентом на терапевтичне посередництво засобами мистецтва в Université Côte d'Azur, Ніцца.",
+      about_p2: "Протягом восьми років вона працювала з дітьми, підлітками та дорослими — у приватній психоаналітичній практиці, в психологічних кабінетах та як інструктор з йоги. Нині основна робота з дітьми та підлітками ведеться в рамках психоаналітичного підходу — у форматі pratique à plusieurs, під супервізією. З вересня 2024 року Ганна працює в Ірландії в сфері допомоги людям з аутизмом та інвалідністю — як фахівець із соціального супроводу, надаючи підтримку в повсякденному житті, емоційному благополуччі та структурованому догляді.",
+      about_p3: "У роботі Ганни поєднуються клінічний досвід та академічна строгість. Її інтереси зосереджені на дитинстві, підлітковому та дорослому віці — особливо там, де тривога, конфлікт, повторення, замкненість або труднощі у стосунках сигналізують про щось, що потребує уваги. Підхід спирається на психоаналітичну традицію — ту її частину, що була побудована в роботі з дітьми, підлітками та в інституційних просторах, де клінічний досвід і теоретична думка завжди йшли поряд.",
+      about_p4: "Ганна є членом <a href='https://pa-uap.org/ru/experts/shekunova-anna-vladislavovna/' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>Української асоціації психоаналізу (УАП)</a> та має колективне членство в <a href='https://ucpp.org/dlya-spetsialistiv/ucpp' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>ЄКПП — Європейській федерації психоаналітичної психотерапії (UCPP)</a>.",
+      about_cta: "Співпрацювати зі Мною",
+      quote_text: "«Я працюю відповідно до Етичних принципів психологів та Кодексу поведінки. Конфіденційність сприймається з найвищою серйозністю: те, що приноситься на сесії, залишається в межах терапевтичного середовища. Без винятків.»",
+      quote_cite: "\u2014 Ганна Шекунова",
+      faq_label: "Питання та Відповіді", faq_heading: "Що Часто<br>Запитують",
+      faq_sub: "Це питання, які найчастіше виникають перед першим контактом. Якщо ваше питання тут не знайдено, зв'язатися зі мною — просто і завжди вітається.",
+      faq_note: "Є ще щось на думці?<br><a href='#contact'>Надішліть коротке повідомлення</a> — жодної підготовки не потрібно.",
+      faq: [
+        {q:"З якими проблемами ви працюєте?",a:"Я працюю з підлітками, молодими дорослими та дорослими з широким спектром проблем — включаючи тривогу та повторюваний дистрес, СДУГ та труднощі з увагою, депресію та знижений настрій, аутизм та нейровідмінність, травму, горе та втрату, стосункові труднощі, питання ідентичності та самопізнання, життєві переходи, вигорання та психосоматичні прояви. Якщо ваша конкретна проблема тут не вказана, будь ласка, зверніться до мене."},
+        {q:"Як мені зрозуміти, чи підходите ви мені?",a:"Це не потрібно знати заздалегідь. Перша сесія — це можливість відчути, чи підходить вам ця робота — ви ні до чого не зобов'язані, крім цієї початкової зустрічі. Багато людей виявляють, що питання відповідності прояснюється, як тільки вони просто починають."},
+        {q:"Я ніколи не був(ла) на терапії — чого очікувати?",a:"Вам не потрібно приходити з правильними словами, чіткою історією або готовим поясненням. Ми починаємо звідти, де ви є. Сесії — це не тести. Сум'яття, вагання, тиша та незнання, з чого почати — все це абсолютно допустимо. І часто саме це є найважливішими відправними точками."},
+        {q:"Чи потрібно бути в кризі, щоб звернутися до терапії?",a:"Зовсім ні. Багато людей приходять на терапію, бо щось відчувається повторюваним, складним, болісним або просто важко зрозумілим. Вам не потрібно досягати точки зламу, перш ніж звернутися за допомогою. Шукати підтримку — це часто знак того, що щось хоче змінитися."},
+        {q:"Скільки коштують сесії?",a:"Вартість обговорюється відкрито та з повагою. Я пропоную чіткі ціни, і де це доцільно, я рада обговорити умови, які відповідатимуть вашим обставинам. Правильна вартість може бути погоджена під час короткого вступного дзвінка."},
+        {q:"Мій підліток не відкривається — ви все одно можете з ним працювати?",a:"Підліткам не потрібно приходити готовими відкриватися. Робота починається з того, щоб дати простір для їхнього власного способу входження. Опір сам по собі є частиною роботи, а не перешкодою для неї. Багато молодих людей, які спочатку відмовлялися від терапії, знаходять свій шлях, коли умови справді їхні."},
+        {q:"Я вже пробував(ла) терапію, і це не допомогло.",a:"Цей досвід варто брати серйозно, і абсолютно справедливо це назвати. Попередня терапія могла не підійти вам за атмосферою, часом або підходом. Багато людей повертаються до терапії після розчарування в іншому місці та виявляють, що вдруге стає можливим щось справді інше."},
+        {q:"Що, якщо я не можу знайти слів для того, що відчуваю?",a:"Вам це не потрібно. Сум'яття, суперечливість і незнання, з чого почати — все це є дійсними відправними точками. Те, що найважче висловити словами, — часто саме те, для чого існує терапія."},
+        {q:"Ви пропонуєте онлайн-сесії?",a:"Так. Онлайн-сесії доступні і можуть бути організовані в регулярному тижневому ритмі, що підходить до вашого режиму роботи, навчання чи сімейного життя. Онлайн-робота може пропонувати глибину, послідовність і справжній терапевтичний простір."},
+        {q:"Як забезпечується конфіденційність?",a:"Ганна Шекунова працює відповідно до Етичних принципів психологів та Кодексу поведінки. Конфіденційність сприймається з найвищою серйозністю: те, що приноситься на сесії, залишається в межах терапевтичного середовища. Без винятків."}
+      ],
+      services_label: "Що Я Пропоную", services_heading: "Індивідуальна Психоаналітична Терапія",
+      services_sub: "Кожна сесія формується тим, що ви приносите. Нижче наведено основні контексти, в яких я працюю.",
+      service1_title: "Індивідуальна Терапія", service1_desc: "Психоаналітичні сесії один на один для дорослих. Простір для вільного мовлення — щоб досліджувати те, що повторюється, що бентежить або що просто відчувається занадто важким, щоб нести на самоті.", service1_link: "Зв'язатися",
+      service2_title: "Робота з Дітьми та Підлітками", service2_desc: "Спеціалізована робота з дітьми, підлітками та молодими дорослими — спираючись на великий досвід в освітніх та соціальних умовах у Києві та Ірландії.", service2_link: "Зв'язатися",
+      service3_title: "Особисті та Онлайн-сесії", service3_desc: "Сесії проводяться як особисто, так і онлайн, і можуть бути організовані в регулярному тижневому ритмі, що підходить до вашого режиму роботи, навчання чи сімейного життя.", service3_link: "Зв'язатися",
+      dark_label: "Терапевтичне Середовище", dark_heading: "Про Роботу<br>Наживо",
+      dark_body: "Ганна вважає, що особиста зустріч є бажаним і найбільш значущим способом увійти в терапевтичні стосунки — і що вона необхідна для кожного, хто має таку можливість. Зустрічатися в одному приміщенні тиждень за тижнем створює умови для зв'язку та глибини, які принципово відрізняються від будь-якого екрана. Ганна щиро заохочує всіх, хто може, розглянути особисті сесії насамперед. Ніхто не відчує, що їхні обставини є перешкодою.",
+      dark_cta: "Почати Розмову",
+      phone_label: "Бажаєте зателефонувати?", phone_heading: "+353 (0)831 134 629",
+      phone_body: "Ганна активно заохочує людей телефонувати — це бажаний і найбільш безпосередній спосіб першого контакту. Вона не є суворою до нікого, і ніхто не відчує, що вторгається або що його питання незначне. Будь ласка, не соромтесь звертатися.",
+      contact_label: "Зв'яжіться", contact_heading: "Зв'яжіться зі Мною для Запису",
+      contact_sub: "Я буду рада почути від вас. Заповніть форму нижче, і я відповім протягом одного-двох робочих днів. Вартість обговорюється відкрито та з повагою.",
+      contact_details_label: "Деталі", contact_details_heading: "Зв'яжіться Безпосередньо",
+      contact_online_note: "Онлайн-сесії доступні і можуть бути організовані в регулярному тижневому ритмі, що підходить до вашого режиму роботи, навчання чи сімейного життя.",
+      label_phone: "Телефон", label_email: "Ел. пошта", label_location: "Місцезнаходження",
+      form_fname_label: "Ім'я", form_fname_ph: "Ваше ім'я",
+      form_lname_label: "Прізвище", form_lname_ph: "Ваше прізвище",
+      form_email_label: "Електронна адреса", form_email_ph: "ваш@email.com",
+      form_phone_label: "Номер телефону", form_phone_ph: "+353 …",
+      form_service_label: "Цікавить", form_service_default: "Оберіть послугу…",
+      form_opt1: "Індивідуальна Терапія", form_opt2: "Робота з Дітьми та Підлітками", form_opt3: "Особисті та Онлайн-сесії", form_opt4: "Вступний Дзвінок",
+      form_msg_label: "Повідомлення", form_msg_ph: "Розкажіть трохи про те, що привело вас сюди (необов'язково)…",
+      form_submit: "Надіслати",
+      footer_member_label: "Членство",
+      footer_nav_title: "Навігація", footer_nav_about: "Про мене", footer_nav_faqs: "Питання", footer_nav_services: "Послуги", footer_nav_approach: "Про Роботу Наживо", footer_nav_contact: "Контакт та Запис",
+      footer_fees_title: "Вартість та Доступність", footer_fees_text: "Вартість обговорюється відкрито та з повагою. Чіткі ціни, з можливостями там, де це доцільно. Правильна ціна може бути погоджена під час короткого вступного дзвінка.",
+      footer_location: "Вотерфорд, Ірландія", footer_copyright: "\u00a9 2026 Ганна Шекунова \u00b7 Всі права захищено"
+    },
+    ru: {
+      page_title: "Ганна Шекунова | Психоаналитик & Терапевт",
+      nav_about: "Обо мне", nav_faqs: "Вопросы", nav_services: "Услуги", nav_contact: "Контакт", nav_book: "Записаться",
+      hero_eyebrow: "Психология и психоанализ",
+      typewriter_words: ["Индивидуальная Психоаналитическая Терапия","Работа с Детьми и Подростками","Личные и Онлайн-сессии","Поддержка при Травме и Тревоге","Pratique à Plusieurs"],
+      hero_cta1: "Записаться на Консультацию", hero_cta2: "Узнать Больше",
+      about_rotate: ["Основана на Психоаналитической Практике","Работа с Детьми и Взрослыми","Находится в Уотерфорде, Ирландия","Член УАП и ЄКПП","Этическая Практика, Всегда"],
+      about_heading: "Обо Мне",
+      about_p1: "Ганна Шекунова — психолог психоаналитической ориентации, живущая и работающая в Ирландии. Получила степень магистра психологии в Межрегиональной академии управления персоналом, диплом по практической психологии и психоанализу в Международном институте глубинной психологии (Киев), а также диплом по физиологии и биологии университета им. Шевченко. В Ирландии прошла курсы QQI по изучению интеллектуальных нарушений, диетологии, спортивной терапии и уходу за животными. В настоящее время завершает магистратуру по клинической психологии с акцентом на терапевтическое посредничество средствами искусства в Université Côte d'Azur, Ницца.",
+      about_p2: "На протяжении восьми лет она работала с детьми, подростками и взрослыми — в частной психоаналитической практике, в психологических кабинетах и в качестве инструктора йоги. Сегодня основная работа с детьми и подростками ведётся в рамках психоаналитического подхода — в формате pratique à plusieurs, под супервизией. С сентября 2024 года Ганна работает в Ирландии в сфере помощи людям с аутизмом и инвалидностью — в качестве специалиста по социальному сопровождению, оказывая поддержку в повседневной жизни, эмоциональном благополучии и структурированном уходе.",
+      about_p3: "В работе Ганны сочетаются клинический опыт и академическая строгость. Её интересы сосредоточены на детстве, подростковом и взрослом возрасте — прежде всего там, где тревога, конфликт, повторение, замкнутость или трудности в отношениях сигнализируют о чём-то, что требует внимания. Подход опирается на психоаналитическую традицию — ту её часть, что была выстроена в работе с детьми, подростками и в институциональных пространствах, где клинический опыт и теоретическая мысль всегда шли рядом.",
+      about_p4: "Ганна является членом <a href='https://pa-uap.org/ru/experts/shekunova-anna-vladislavovna/' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>Украинской ассоциации психоанализа (УАП)</a> и обладает коллективным членством в <a href='https://ucpp.org/dlya-spetsialistiv/ucpp' target='_blank' rel='noopener' style='color:var(--dark-accent);text-decoration:underline;text-underline-offset:3px;'>ЄКПП — Европейской федерации психоаналитической психотерапии (UCPP)</a>.",
+      about_cta: "Сотрудничать со Мной",
+      quote_text: "«Я работаю в соответствии с Этическими принципами психологов и Кодексом поведения. Конфиденциальность воспринимается с высочайшей серьёзностью: то, что приносится на сессии, остаётся в рамках терапевтической обстановки. Без исключений.»",
+      quote_cite: "\u2014 Анна Шекунова",
+      faq_label: "Вопросы и Ответы", faq_heading: "Что Часто<br>Спрашивают",
+      faq_sub: "Это вопросы, которые чаще всего возникают перед первым контактом. Если ваш вопрос здесь не найден, обратиться ко мне — просто, и это всегда приветствуется.",
+      faq_note: "Есть ещё что-то на уме?<br><a href='#contact'>Напишите короткое сообщение</a> — никакой подготовки не нужно.",
+      faq: [
+        {q:"С какими проблемами вы работаете?",a:"Я работаю с подростками, молодыми взрослыми и взрослыми с широким спектром проблем — включая тревогу и повторяющийся дистресс, СДВГ и трудности с вниманием, депрессию и подавленное настроение, аутизм и нейроотличность, травму, горе и утрату, трудности в отношениях, вопросы идентичности и самопознания, жизненные переходы, выгорание и психосоматические проявления."},
+        {q:"Как мне понять, подходите ли вы мне?",a:"Это не нужно знать заранее. Первая сессия — это возможность почувствовать, подходит ли вам эта работа — вы ни к чему не обязываетесь, кроме этой начальной встречи. Многие люди обнаруживают, что вопрос соответствия проясняется, как только они просто начинают."},
+        {q:"Я никогда не был(а) на терапии — чего ожидать?",a:"Вам не нужно приходить с правильными словами, чёткой историей или готовым объяснением. Мы начинаем оттуда, где вы находитесь. Сессии — это не тесты. Смятение, колебания, тишина и незнание, с чего начать — всё это совершенно допустимо."},
+        {q:"Нужно ли быть в кризисе, чтобы обратиться к терапии?",a:"Совсем нет. Многие люди приходят на терапию, потому что что-то ощущается повторяющимся, сложным, болезненным или просто трудно понятным. Вам не нужно достигать точки излома, прежде чем обратиться за помощью. Искать поддержку — это часто знак того, что что-то хочет измениться."},
+        {q:"Сколько стоят сессии?",a:"Стоимость обсуждается открыто и с уважением. Я предлагаю чёткое ценообразование, и там, где это уместно, я рада обсудить условия, которые будут соответствовать вашим обстоятельствам. Правильная стоимость может быть согласована во время краткого вводного звонка."},
+        {q:"Мой подросток не открывается — вы всё равно можете с ним работать?",a:"Подросткам не нужно приходить готовыми открываться. Работа начинается с создания пространства для их собственного способа входа. Сопротивление само по себе является частью работы, а не препятствием для неё. Многие молодые люди, отказывавшиеся от терапии, находят свой путь, когда обстановка по-настоящему их собственная."},
+        {q:"Я уже пробовал(а) терапию, и это не помогло.",a:"Этот опыт стоит воспринимать серьёзно, и совершенно справедливо его назвать. Предыдущая терапия могла не подойти вам по атмосфере, времени или подходу. Многие люди возвращаются к терапии после разочарования и обнаруживают, что во второй раз становится возможным что-то по-настоящему другое."},
+        {q:"Что, если я не могу найти слов для того, что чувствую?",a:"Вам это не нужно. Смятение, противоречивость и незнание, с чего начать — всё это являются действительными отправными точками. То, что труднее всего выразить словами, — часто именно то, для чего существует терапия."},
+        {q:"Вы предлагаете онлайн-сессии?",a:"Да. Онлайн-сессии доступны и могут быть организованы в регулярном еженедельном ритме, подходящем к вашему режиму работы, учёбы или семейной жизни. Онлайн-работа может предлагать глубину, последовательность и настоящее терапевтическое пространство."},
+        {q:"Как обеспечивается конфиденциальность?",a:"Ганна Шекунова работает в соответствии с Этическими принципами психологов и Кодексом поведения. Конфиденциальность воспринимается с высочайшей серьёзностью: то, что приносится на сессии, остаётся в рамках терапевтической обстановки. Без исключений."}
+      ],
+      services_label: "Что Я Предлагаю", services_heading: "Индивидуальная Психоаналитическая Терапия",
+      services_sub: "Каждая сессия формируется тем, что вы приносите. Ниже приведены основные контексты, в которых я работаю.",
+      service1_title: "Индивидуальная Терапия", service1_desc: "Психоаналитические сессии один на один для взрослых. Пространство для свободной речи — чтобы исследовать то, что повторяется, что сбивает с толку или что просто ощущается слишком тяжёлым.", service1_link: "Связаться",
+      service2_title: "Работа с Детьми и Подростками", service2_desc: "Специализированная работа с детьми, подростками и молодыми взрослыми — опираясь на богатый опыт в образовательных и социальных условиях в Киеве и Ирландии.", service2_link: "Связаться",
+      service3_title: "Личные и Онлайн-сессии", service3_desc: "Сессии проводятся как лично, так и онлайн, и могут быть организованы в регулярном еженедельном ритме, подходящем для вашего режима работы, учёбы или семейной жизни.", service3_link: "Связаться",
+      dark_label: "Терапевтическое Пространство", dark_heading: "О Работе<br>Лично",
+      dark_body: "Ганна убеждена, что личная встреча — это предпочтительный и наиболее значимый способ войти в терапевтические отношения, и что для каждого, кто имеет такую возможность, она необходима. Встречаться в одном пространстве, неделя за неделей, — значит создавать условия для связи и глубины, принципиально отличные от любого экрана. Она тепло призывает всех, кто может, в первую очередь рассмотреть сессии лично. Никто не почувствует, что его обстоятельства стоят на пути.",
+      dark_cta: "Начать Разговор",
+      phone_label: "Предпочитаете позвонить?", phone_heading: "+353 (0)831 134 629",
+      phone_body: "Ганна активно поощряет людей звонить — это предпочтительный и наиболее непосредственный способ первого контакта. Она не строга ни с кем, и никто не почувствует, что вторгается или что его вопрос незначителен. Пожалуйста, не стесняйтесь обращаться.",
+      contact_label: "Свяжитесь", contact_heading: "Свяжитесь со Мной для Записи",
+      contact_sub: "Я буду рада услышать от вас. Заполните форму ниже, и я отвечу в течение одного-двух рабочих дней. Стоимость обсуждается открыто и с уважением.",
+      contact_details_label: "Детали", contact_details_heading: "Свяжитесь Напрямую",
+      contact_online_note: "Онлайн-сессии доступны и могут быть организованы в регулярном еженедельном ритме, подходящем к вашему режиму работы, учёбы или семейной жизни.",
+      label_phone: "Телефон", label_email: "Эл. почта", label_location: "Местонахождение",
+      form_fname_label: "Имя", form_fname_ph: "Ваше имя",
+      form_lname_label: "Фамилия", form_lname_ph: "Ваша фамилия",
+      form_email_label: "Электронный адрес", form_email_ph: "ваш@email.com",
+      form_phone_label: "Номер телефона", form_phone_ph: "+353 …",
+      form_service_label: "Интересует", form_service_default: "Выберите услугу…",
+      form_opt1: "Индивидуальная Терапия", form_opt2: "Работа с Детьми и Подростками", form_opt3: "Личные и Онлайн-сессии", form_opt4: "Вводный Звонок",
+      form_msg_label: "Сообщение", form_msg_ph: "Расскажите немного о том, что привело вас сюда (необязательно)…",
+      form_submit: "Отправить",
+      footer_member_label: "Членство",
+      footer_nav_title: "Навигация", footer_nav_about: "Обо мне", footer_nav_faqs: "Вопросы", footer_nav_services: "Услуги", footer_nav_approach: "О Работе Лично", footer_nav_contact: "Контакт и Запись",
+      footer_fees_title: "Стоимость и Доступность", footer_fees_text: "Стоимость обсуждается открыто и с уважением. Чёткое ценообразование, с вариантами там, где это уместно. Правильная цена может быть согласована во время краткого вводного звонка.",
+      footer_location: "Уотерфорд, Ирландия", footer_copyright: "\u00a9 2026 Ганна Шекунова \u00b7 Все права защищены"
+    }
+  };
+
+  // ─── LANG ENGINE ────────────────────────────────────────────────
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === 'uk' ? 'uk' : lang === 'ru' ? 'ru' : 'en';
+    document.title = T[lang].page_title;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n;
+      if (T[lang][k] !== undefined) el.textContent = T[lang][k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const k = el.dataset.i18nHtml;
+      if (T[lang][k] !== undefined) el.innerHTML = T[lang][k];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const k = el.dataset.i18nPlaceholder;
+      if (T[lang][k] !== undefined) el.placeholder = T[lang][k];
+    });
+    document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+      const k = el.dataset.i18nOpt;
+      if (T[lang][k] !== undefined) el.textContent = T[lang][k];
+    });
+
+    // lang button states
+    document.querySelectorAll('.lang-btn, .mob-lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    buildFAQ(lang);
+    localStorage.setItem('lang', lang);
+  }
+
+  function setLang(lang) { applyLang(lang); }
+
+  // ─── FAQ ────────────────────────────────────────────────────────
+  function buildFAQ(lang) {
+    const container = document.getElementById('faq-accordion');
+    if (!container) return;
+    const items = T[lang].faq;
+    container.innerHTML = items.map((item, i) => `
+      <div class="faq-item" role="listitem">
+        <button class="faq-trigger" aria-expanded="false" aria-controls="faq-body-${i}">
+          <span>${item.q}</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-content" id="faq-body-${i}" role="region">
+          <div class="faq-content-inner">${item.a}</div>
+        </div>
+      </div>`).join('');
+    initFAQ();
+  }
+
+  function initFAQ() {
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', function() {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        const content = document.getElementById(this.getAttribute('aria-controls'));
+        document.querySelectorAll('.faq-trigger').forEach(t => {
+          if (t !== this) {
+            t.setAttribute('aria-expanded', 'false');
+            const other = document.getElementById(t.getAttribute('aria-controls'));
+            if (other) other.style.maxHeight = '0';
+          }
+        });
+        if (expanded) {
+          this.setAttribute('aria-expanded', 'false');
+          content.style.maxHeight = '0';
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+  }
+
+  // ─── SMOOTH SCROLL ──────────────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ─── NAV SHADOW ─────────────────────────────────────────────────
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header.style.boxShadow = window.scrollY > 20 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+  });
+
+  // ─── HAMBURGER ──────────────────────────────────────────────────
+  const navToggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    navToggle.classList.remove('open');
+  }
+  navToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    navToggle.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMobileMenu);
+  });
+
+  // ─── TYPEWRITER ─────────────────────────────────────────────────
+  (function() {
+    const el = document.getElementById('typewriter');
+    if (!el) return;
+    let wIdx = 0, cIdx = 0, deleting = false;
+    const TYPING = 75, DELETING = 38, PAUSE = 2200;
+    function tick() {
+      const words = T[currentLang].typewriter_words;
+      const word = words[wIdx % words.length];
+      if (!deleting) {
+        el.textContent = word.substring(0, cIdx + 1);
+        cIdx++;
+        if (cIdx === word.length) { deleting = true; return setTimeout(tick, PAUSE); }
+      } else {
+        el.textContent = word.substring(0, cIdx - 1);
+        cIdx--;
+        if (cIdx === 0) { deleting = false; wIdx = (wIdx + 1) % words.length; }
+      }
+      setTimeout(tick, deleting ? DELETING : TYPING);
+    }
+    tick();
+  })();
+
+  // ─── TEXT ROTATE ────────────────────────────────────────────────
+  (function() {
+    const span = document.getElementById('rotate-label');
+    if (!span) return;
+    let idx = 0;
+    setInterval(() => {
+      span.classList.remove('tr-show'); span.classList.add('tr-out');
+      setTimeout(() => {
+        const phrases = T[currentLang].about_rotate;
+        idx = (idx + 1) % phrases.length;
+        span.textContent = phrases[idx];
+        span.classList.remove('tr-out'); span.classList.add('tr-in');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          span.classList.remove('tr-in'); span.classList.add('tr-show');
+        }));
+      }, 450);
+    }, 3200);
+  })();
+
+  // ─── FOOTER MAP ─────────────────────────────────────────────────
+  (function() {
+    const el = document.getElementById('footer-map-canvas');
+    if (!el || typeof L === 'undefined') return;
+    const map = L.map(el, { center: [52.2593,-7.1101], zoom: 11, zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>', subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+    L.circleMarker([52.2593,-7.1101], { radius: 7, fillColor: '#E35336', color: 'rgba(245,245,220,0.8)', weight: 2, opacity: 1, fillOpacity: 0.92 }).addTo(map).bindTooltip('Waterford, Ireland', { permanent: false, direction: 'top' });
+  })();
+
+  // ─── INIT ────────────────────────────────────────────────────────
+  (function() {
+    const saved = localStorage.getItem('lang');
+    applyLang(saved && T[saved] ? saved : 'en');
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Node binaries / installers
+node-v*/
+*.zip
+*.msi
+nodejs-install.log
+
+# Large local files
+clone.png
+
+# Temp screenshots (working files)
+temporary screenshots/
+
+# Root-level screenshots
+Screenshot *.png
+
+# Nested repo (push separately or add as submodule)
+projectErgclean/
