@@ -12,6 +12,3 @@ temporary screenshots/
 
 # Root-level screenshots
 Screenshot *.png
-
-# Nested repo (push separately or add as submodule)
-projectErgclean/
