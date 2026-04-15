@@ -412,6 +412,7 @@
         <h2 class="section-heading" data-i18n="services_heading">Individual Psychoanalytic Therapy</h2>
         <div class="section-divider center"></div>
         <p class="section-body" style="max-width:580px; margin:0 auto; font-size:0.95rem;" data-i18n="services_sub">Each session is shaped by what you bring. Below are the primary contexts in which I work.</p>
+        <div data-i18n-html="services_desc" style="max-width:700px; margin:2rem auto 0; font-family:var(--body-font); font-weight:300; font-size:0.93rem; line-height:1.85em; color:#7a5a48; text-align:left;"></div>
       </div>
       <div class="services-grid">
         <div class="service-card">
@@ -496,7 +497,7 @@
   <section class="phone-strip" id="phone">
     <div class="content-wrapper">
       <p class="phone-strip-label" data-i18n="phone_label">Prefer to call?</p>
-      <a href="tel:+353831134629" class="phone-number-display">+353 (0)831 134 629</a>
+      <a href="tel:+353831134629" class="phone-number-display">+353 (83) 113 4629</a>
       <p class="phone-strip-body" data-i18n="phone_body">Ganna actively encourages people to call — it is the preferred and most direct way to make first contact. She is not hard on anyone, and no one is made to feel that they are intruding or that their question is too small. Please feel free to reach out.</p>
     </div>
   </section>
@@ -518,7 +519,7 @@
           <div style="margin-top:1.8rem;">
             <div class="contact-info-item">
               <span class="label" data-i18n="label_phone">Phone</span>
-              <span class="value"><a href="tel:+353831134629" style="color:inherit; text-decoration:none;">+353 (0)831 134 629</a></span>
+              <span class="value"><a href="tel:+353831134629" style="color:inherit; text-decoration:none;">+353 (83) 113 4629</a></span>
             </div>
             <div class="contact-info-item">
               <span class="label" data-i18n="label_email">Email</span>
@@ -534,7 +535,8 @@
           </div>
         </div>
         <div class="contact-right">
-          <form class="contact-form" onsubmit="return false;">
+          <form id="form" class="contact-form">
+            <input type="hidden" name="access_key" value="2d708c0c-815c-44e3-b69f-eae0df4930f6">
             <div class="names-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
               <div class="form-group">
                 <label for="fname" data-i18n="form_fname_label">First Name</label>
@@ -587,7 +589,7 @@
           <address>
             <p data-i18n="hero_eyebrow">Psychoanalytically Oriented Practitioner</p>
             <p data-i18n="footer_location">Waterford, Ireland</p>
-            <p style="margin-top:0.8rem;"><a href="tel:+353831134629" style="color:inherit;text-decoration:none;">+353 (0)831 134 629</a></p>
+            <p style="margin-top:0.8rem;"><a href="tel:+353831134629" style="color:inherit;text-decoration:none;">+353 (83) 113 4629</a></p>
             <p>gannashnova@gmail.com</p>
           </address>
         </div>
@@ -614,6 +616,7 @@
         <a href="https://ucpp.org/dlya-spetsialistiv/ucpp" target="_blank" rel="noopener" style="opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
           <img src="brand_assets/ecpp-logo.png" alt="ЄКПП / UCPP" style="height:48px; width:auto; display:block; background:rgba(255,255,255,0.92); padding:6px 10px; border-radius:4px;">
         </a>
+        <a href="https://ifp-world.com/en/experts/shekunova-ganna/" target="_blank" rel="noopener" style="opacity:0.75; transition:opacity 0.2s; font-family:var(--body-font); font-weight:300; font-size:0.75rem; letter-spacing:0.06em; color:rgba(255,255,255,0.55); text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">IFP World</a>
       </div>
       <div class="footer-bottom">
         <span class="footer-site-name">Ganna Shekunova</span>
@@ -645,26 +648,27 @@
       faq_sub: "These are the questions that most often come before a first contact. If yours is not here, reaching out is straightforward — and welcome.",
       faq_note: "Something else on your mind?<br><a href='#contact'>Send a short message</a> — no preparation needed.",
       faq: [
-        {q:"What kinds of concerns do you work with?",a:"I work with adolescents, young adults, and adults across a wide range of concerns — including anxiety and repetitive distress, ADHD and attention difficulties, depression and low mood, autism and neurodiversity, trauma, grief and loss, relational difficulty, identity and questions of self, life transitions, burnout, and psychosomatic concerns. If you do not see your specific concern listed, please reach out. The first contact is simply a chance to see whether the work feels right for you."},
-        {q:"How do I know if you're the right therapist for me?",a:"You don't need to know in advance. The first session is a chance to see whether the work feels right — you are not committing to anything beyond that initial meeting. Many people find that the question of fit becomes clearer once they have simply begun."},
-        {q:"I've never done therapy before — what should I expect?",a:"You don't need to arrive with the right words, a clear story, or a finished explanation. We begin from where you are. Sessions are not tests. Confusion, hesitation, silence, and not knowing where to start are all entirely valid — and often, these are the most important starting points."},
-        {q:"Do I have to be in crisis to come to therapy?",a:"Not at all. Many people come to therapy because something feels repetitive, difficult, painful, or simply hard to understand — not because they are in acute distress. You do not have to reach a breaking point before reaching out. Seeking support is not a sign that things have gone wrong — it is often a sign that something wants to change."},
+        {q:"What kinds of concerns do you work with?",a:"My work spans different age groups and life situations — adolescents and their parents, children including those on the autistic spectrum, and adults facing inner crises, relocation, or a search for direction. Work may touch on anxiety, panic attacks, relational difficulties, repetitive life patterns, or the sense of being unable to realise oneself. If you are uncertain whether what you are carrying fits what I do, please reach out — the first contact is a chance to find out."},
+        {q:"How do I know if you're right for me?",a:"You can get a sense of whether this way of working suits you through a first meeting — it gives you a chance to notice your own response and see whether continuing feels right."},
+        {q:"I've never worked with a psychoanalyst before — what should I expect?",a:"You don't need to arrive with the right words, a clear story, or a finished explanation. We begin from where you are. Sessions are not tests. Confusion, hesitation, silence, and not knowing where to start are all entirely valid — and often, these are the most important starting points."},
+        {q:"Do I have to be in crisis to come to psychoanalysis?",a:"Not at all. Many people come because something feels repetitive, difficult, painful, or simply hard to understand — not because they are in acute distress. You do not have to reach a breaking point before reaching out."},
         {q:"How much do sessions cost?",a:"Fees are discussed openly and respectfully. I offer clear pricing, and where appropriate, I am glad to discuss an arrangement that feels manageable for your circumstances. There is no need to feel that money is a difficult subject — the right fee can be talked through in a brief introductory call."},
-        {q:"My teenager won't open up — can you still work with them?",a:"Teenagers don't need to arrive ready to open up. The work begins by making space for their own way of entering — whether that means speaking, resisting, withdrawing, or quietly testing what is safe. Resistance itself is part of the work, not an obstacle to it. Many young people who initially refused therapy find their footing when the setting is genuinely theirs."},
-        {q:"I tried therapy before and it didn't help.",a:"That experience is worth taking seriously, and it is entirely fair to name it. A previous therapy may not have been the right fit, the right timing, or the right approach for you. Many people return to therapy after feeling disappointed elsewhere and find that something genuinely different becomes possible the second time."},
+        {q:"My teenager won't speak — can you still work with them?",a:"A teenager doesn't have to come ready to speak. Their silence is already a form of expression — and deserves the same attention as words. The work begins with recognising them as a subject — someone with their own voice, even if it hasn't yet found its shape. The aim is not to 'open them up', but to create a space where they can take their place and find their own way of speaking."},
+        {q:"I tried therapy before and it didn't help.",a:"Strictly speaking, I don't offer therapy — I offer psychoanalysis. That said, an experience of something not helping is worth bringing. What felt absent before may be exactly what becomes possible here."},
         {q:"What if I can't find the words for what I'm feeling?",a:"You don't need to. Confusion, contradiction, and not knowing where to begin are all valid starting points. The things that are hardest to put into words are often precisely what therapy is for. You can come as you are — there is no performance required."},
-        {q:"Do you offer online sessions?",a:"Yes. Online sessions are available and can be arranged within a regular weekly rhythm that fits around work, study, or family life. Online work can still offer depth, consistency, and a real therapeutic space — while making therapy more accessible wherever you are in Ireland or abroad."},
+        {q:"Do you offer online sessions?",a:"Yes. Online sessions are available and can be arranged within a regular weekly rhythm that fits around work, study, or family life. Online work can still offer depth, consistency, and a real therapeutic space — accessible wherever you are in Ireland or abroad."},
         {q:"How do you protect confidentiality?",a:"Ganna Shekunova works in accordance with the Ethical Principles of Psychologists and the Code of Conduct. Confidentiality is treated with the utmost seriousness: what is brought to the sessions remains within the therapeutic setting. No exceptions."}
       ],
       services_label: "What I Offer", services_heading: "Individual Psychoanalytic Therapy",
       services_sub: "Each session is shaped by what you bring. Below are the primary contexts in which I work.",
+      services_desc: "<p style='margin-bottom:1rem;'>My work spans different age groups and life situations. I work with adolescents and their parents — helping to build dialogue, find mutual understanding, and navigate the difficult passages of growing up. A particular area of focus is work with children, including those on the autistic spectrum, where my professional interest centres on understanding their way of engaging with the world and supporting their development.</p><p style='margin-bottom:1rem;'>I also work with adults facing inner crises, relocation to a new country, loss of grounding, or a search for direction. My practice includes experience supporting young mothers through breastfeeding and the subsequent separation of the child — periods when anxiety and inner tension often intensify.</p><p style='margin-bottom:1rem;'>Work may touch on anxiety, panic attacks, relational difficulties, repetitive life patterns, feelings of disorientation, or the sense of being unable to realise oneself. The focus is not only on the symptom itself, but on what lies behind it.</p><p>The process unfolds as a gradual clarification: understanding one's own experience more fully, distinguishing one's own desires, and drawing on one's own strengths.</p>",
       service1_title: "Individual Therapy", service1_desc: "One-on-one psychoanalytic sessions for adults. A space to speak freely — to explore what repeats, what confuses, or what simply feels too heavy to carry alone.", service1_link: "Get in Touch",
       service2_title: "Child & Adolescent Work", service2_desc: "Specialised work with children, teenagers, and young adults — drawing on deep experience in educational and social care settings across Kyiv and Ireland.", service2_link: "Get in Touch",
       service3_title: "In-Person & Online Sessions", service3_desc: "Sessions are offered both in person and online, and can be arranged within a regular weekly rhythm that fits around work, study, or family life.", service3_link: "Get in Touch",
       dark_label: "The Therapeutic Setting", dark_heading: "On Working<br>In Person",
       dark_body: "Ganna believes that in-person work is the preferred and most meaningful way to enter the therapeutic relationship — and that it is necessary for everyone who can manage it. Meeting in the same room, week after week, creates conditions for connection and depth that are genuinely different from any screen. She warmly encourages all who are able to consider in-person sessions first. No one is made to feel that their circumstances stand in the way.",
       dark_cta: "Begin a Conversation",
-      phone_label: "Prefer to call?", phone_heading: "+353 (0)831 134 629",
+      phone_label: "Prefer to call?", phone_heading: "+353 (83) 113 4629",
       phone_body: "Ganna actively encourages people to call — it is the preferred and most direct way to make first contact. She is not hard on anyone, and no one is made to feel that they are intruding or that their question is too small. Please feel free to reach out.",
       contact_label: "Get in Touch", contact_heading: "Contact Me for an Appointment",
       contact_sub: "Fill out the form below and Ganna will respond within one to two business days. Fees are discussed openly and respectfully — the right fee can be discussed in a brief introductory call.",
@@ -703,26 +707,27 @@
       faq_sub: "Це питання, які найчастіше виникають перед першим контактом. Якщо ваше питання тут не знайдено, зв'язатися зі мною — просто і завжди вітається.",
       faq_note: "Є ще щось на думці?<br><a href='#contact'>Надішліть коротке повідомлення</a> — жодної підготовки не потрібно.",
       faq: [
-        {q:"З якими проблемами ви працюєте?",a:"Я працюю з підлітками, молодими дорослими та дорослими з широким спектром проблем — включаючи тривогу та повторюваний дистрес, СДУГ та труднощі з увагою, депресію та знижений настрій, аутизм та нейровідмінність, травму, горе та втрату, стосункові труднощі, питання ідентичності та самопізнання, життєві переходи, вигорання та психосоматичні прояви. Якщо ваша конкретна проблема тут не вказана, будь ласка, зверніться до мене."},
-        {q:"Як мені зрозуміти, чи підходите ви мені?",a:"Це не потрібно знати заздалегідь. Перша сесія — це можливість відчути, чи підходить вам ця робота — ви ні до чого не зобов'язані, крім цієї початкової зустрічі. Багато людей виявляють, що питання відповідності прояснюється, як тільки вони просто починають."},
-        {q:"Я ніколи не був(ла) на терапії — чого очікувати?",a:"Вам не потрібно приходити з правильними словами, чіткою історією або готовим поясненням. Ми починаємо звідти, де ви є. Сесії — це не тести. Сум'яття, вагання, тиша та незнання, з чого почати — все це абсолютно допустимо. І часто саме це є найважливішими відправними точками."},
-        {q:"Чи потрібно бути в кризі, щоб звернутися до терапії?",a:"Зовсім ні. Багато людей приходять на терапію, бо щось відчувається повторюваним, складним, болісним або просто важко зрозумілим. Вам не потрібно досягати точки зламу, перш ніж звернутися за допомогою. Шукати підтримку — це часто знак того, що щось хоче змінитися."},
+        {q:"З якими проблемами ви працюєте?",a:"Моя робота охоплює різні вікові групи та життєві ситуації — підлітків та їхніх батьків, дітей, в тому числі з розладами аутистичного спектру, і дорослих, які переживають внутрішні кризи, переїзд або пошук свого напрямку. Робота може торкатися тривожних станів, панічних атак, труднощів у стосунках, повторюваних сценаріїв або відчуття неможливості реалізувати себе. Якщо ви не впевнені, чи підходить вам те, чим я займаюся, — просто зверніться: перший контакт — це спосіб це з'ясувати."},
+        {q:"Як мені зрозуміти, чи підходите ви мені?",a:"Відчути, чи підходить вам такий формат роботи, можна через першу зустріч — вона дозволяє почути власний відгук і визначити, можливе чи продовження."},
+        {q:"Я ніколи не зверталися до психоаналітика — чого очікувати?",a:"Вам не потрібно приходити з правильними словами, чіткою історією або готовим поясненням. Ми починаємо звідти, де ви є. Сесії — це не тести. Сум'яття, вагання, тиша та незнання, з чого почати — все це абсолютно допустимо. І часто саме це є найважливішими відправними точками."},
+        {q:"Чи потрібно бути в кризі, щоб звернутися до психоаналізу?",a:"Зовсім ні. Багато людей приходять, бо щось відчувається повторюваним, складним, болісним або просто важко зрозумілим. Вам не потрібно досягати точки зламу, перш ніж звернутися за допомогою."},
         {q:"Скільки коштують сесії?",a:"Вартість обговорюється відкрито та з повагою. Я пропоную чіткі ціни, і де це доцільно, я рада обговорити умови, які відповідатимуть вашим обставинам. Правильна вартість може бути погоджена під час короткого вступного дзвінка."},
-        {q:"Мій підліток не відкривається — ви все одно можете з ним працювати?",a:"Підліткам не потрібно приходити готовими відкриватися. Робота починається з того, щоб дати простір для їхнього власного способу входження. Опір сам по собі є частиною роботи, а не перешкодою для неї. Багато молодих людей, які спочатку відмовлялися від терапії, знаходять свій шлях, коли умови справді їхні."},
-        {q:"Я вже пробував(ла) терапію, і це не допомогло.",a:"Цей досвід варто брати серйозно, і абсолютно справедливо це назвати. Попередня терапія могла не підійти вам за атмосферою, часом або підходом. Багато людей повертаються до терапії після розчарування в іншому місці та виявляють, що вдруге стає можливим щось справді інше."},
+        {q:"Підліток мовчить — чи можлива все одно робота?",a:"Підліток не зобов'язаний приходити, щоб одразу говорити. Його мовчання вже є формою висловлювання і потребує уваги так само, як і мова. Робота починається з визнання його як суб'єкта — того, хто має власне слово, навіть якщо воно поки що не оформилося. Йдеться не про те, щоб його «відкрити», а про те, щоб створити простір, де він зможе зайняти своє місце і знайти власний спосіб говорити."},
+        {q:"Я вже пробував(ла) терапію, і це не допомогло.",a:"Якщо говорити точно — я не пропоную терапію, я пропоную психоаналіз. Але досвід того, що щось не допомогло, варто принести на першу зустріч. Те, чого бракувало раніше, може виявитися саме тим, що стає можливим тут."},
         {q:"Що, якщо я не можу знайти слів для того, що відчуваю?",a:"Вам це не потрібно. Сум'яття, суперечливість і незнання, з чого почати — все це є дійсними відправними точками. Те, що найважче висловити словами, — часто саме те, для чого існує терапія."},
         {q:"Ви пропонуєте онлайн-сесії?",a:"Так. Онлайн-сесії доступні і можуть бути організовані в регулярному тижневому ритмі, що підходить до вашого режиму роботи, навчання чи сімейного життя. Онлайн-робота може пропонувати глибину, послідовність і справжній терапевтичний простір."},
         {q:"Як забезпечується конфіденційність?",a:"Ганна Шекунова працює відповідно до Етичних принципів психологів та Кодексу поведінки. Конфіденційність сприймається з найвищою серйозністю: те, що приноситься на сесії, залишається в межах терапевтичного середовища. Без винятків."}
       ],
       services_label: "Що Я Пропоную", services_heading: "Індивідуальна Психоаналітична Терапія",
       services_sub: "Кожна сесія формується тим, що ви приносите. Нижче наведено основні контексти, в яких я працюю.",
+      services_desc: "<p style='margin-bottom:1rem;'>Моя робота охоплює різні вікові групи та життєві ситуації. Я працюю з підлітками та їхніми батьками, допомагаючи вибудовувати діалог, знаходити взаєморозуміння та витримувати складні періоди дорослішання. Окремий напрямок — робота з дітьми, в тому числі з розладами аутистичного спектру, де мій професійний інтерес зосереджений на розумінні їхнього способу взаємодії зі світом та підтримці їхнього розвитку.</p><p style='margin-bottom:1rem;'>Також я працюю з дорослими, які стикаються з внутрішніми кризами, переїздом до іншої країни, втратою опори або пошуком свого напрямку. У практиці присутній досвід супроводу молодих матерів у період грудного вигодовування та подальшої сепарації дитини, коли посилюються тривоги та внутрішня напруга.</p><p style='margin-bottom:1rem;'>Робота може торкатися тривожних станів, панічних атак, труднощів у стосунках, повторюваних життєвих сценаріїв, відчуття розгубленості або неможливості реалізувати себе. У центрі уваги — не лише сам симптом, але й те, що за ним стоїть.</p><p>Процес будується як поступове прояснення: стає можливим краще зрозуміти свої переживання, розрізнити власні бажання та спертися на свої сильні сторони.</p>",
       service1_title: "Індивідуальна Терапія", service1_desc: "Психоаналітичні сесії один на один для дорослих. Простір для вільного мовлення — щоб досліджувати те, що повторюється, що бентежить або що просто відчувається занадто важким, щоб нести на самоті.", service1_link: "Зв'язатися",
       service2_title: "Робота з Дітьми та Підлітками", service2_desc: "Спеціалізована робота з дітьми, підлітками та молодими дорослими — спираючись на великий досвід в освітніх та соціальних умовах у Києві та Ірландії.", service2_link: "Зв'язатися",
       service3_title: "Особисті та Онлайн-сесії", service3_desc: "Сесії проводяться як особисто, так і онлайн, і можуть бути організовані в регулярному тижневому ритмі, що підходить до вашого режиму роботи, навчання чи сімейного життя.", service3_link: "Зв'язатися",
       dark_label: "Терапевтичне Середовище", dark_heading: "Про Роботу<br>Наживо",
       dark_body: "Ганна вважає, що особиста зустріч є бажаним і найбільш значущим способом увійти в терапевтичні стосунки — і що вона необхідна для кожного, хто має таку можливість. Зустрічатися в одному приміщенні тиждень за тижнем створює умови для зв'язку та глибини, які принципово відрізняються від будь-якого екрана. Ганна щиро заохочує всіх, хто може, розглянути особисті сесії насамперед. Ніхто не відчує, що їхні обставини є перешкодою.",
       dark_cta: "Почати Розмову",
-      phone_label: "Бажаєте зателефонувати?", phone_heading: "+353 (0)831 134 629",
+      phone_label: "Бажаєте зателефонувати?", phone_heading: "+353 (83) 113 4629",
       phone_body: "Ганна активно заохочує людей телефонувати — це бажаний і найбільш безпосередній спосіб першого контакту. Вона не є суворою до нікого, і ніхто не відчує, що вторгається або що його питання незначне. Будь ласка, не соромтесь звертатися.",
       contact_label: "Зв'яжіться", contact_heading: "Зв'яжіться зі Мною для Запису",
       contact_sub: "Я буду рада почути від вас. Заповніть форму нижче, і я відповім протягом одного-двох робочих днів. Вартість обговорюється відкрито та з повагою.",
@@ -761,26 +766,27 @@
       faq_sub: "Это вопросы, которые чаще всего возникают перед первым контактом. Если ваш вопрос здесь не найден, обратиться ко мне — просто, и это всегда приветствуется.",
       faq_note: "Есть ещё что-то на уме?<br><a href='#contact'>Напишите короткое сообщение</a> — никакой подготовки не нужно.",
       faq: [
-        {q:"С какими проблемами вы работаете?",a:"Я работаю с подростками, молодыми взрослыми и взрослыми с широким спектром проблем — включая тревогу и повторяющийся дистресс, СДВГ и трудности с вниманием, депрессию и подавленное настроение, аутизм и нейроотличность, травму, горе и утрату, трудности в отношениях, вопросы идентичности и самопознания, жизненные переходы, выгорание и психосоматические проявления."},
-        {q:"Как мне понять, подходите ли вы мне?",a:"Это не нужно знать заранее. Первая сессия — это возможность почувствовать, подходит ли вам эта работа — вы ни к чему не обязываетесь, кроме этой начальной встречи. Многие люди обнаруживают, что вопрос соответствия проясняется, как только они просто начинают."},
-        {q:"Я никогда не был(а) на терапии — чего ожидать?",a:"Вам не нужно приходить с правильными словами, чёткой историей или готовым объяснением. Мы начинаем оттуда, где вы находитесь. Сессии — это не тесты. Смятение, колебания, тишина и незнание, с чего начать — всё это совершенно допустимо."},
-        {q:"Нужно ли быть в кризисе, чтобы обратиться к терапии?",a:"Совсем нет. Многие люди приходят на терапию, потому что что-то ощущается повторяющимся, сложным, болезненным или просто трудно понятным. Вам не нужно достигать точки излома, прежде чем обратиться за помощью. Искать поддержку — это часто знак того, что что-то хочет измениться."},
+        {q:"С какими проблемами вы работаете?",a:"Моя работа охватывает разные возрастные группы и жизненные ситуации — подростков и их родителей, детей, в том числе с расстройствами аутистического спектра, и взрослых, переживающих внутренние кризисы, переезд или поиск своего направления. Работа может касаться тревожных состояний, панических атак, трудностей в отношениях, повторяющихся сценариев или ощущения невозможности реализовать себя. Если вы не уверены, подходит ли то, чем я занимаюсь, к тому, с чем вы приходите, — просто напишите: первый контакт — это возможность это выяснить."},
+        {q:"Как мне понять, подходите ли вы мне?",a:"Ощутить, подходит ли вам такой формат работы, можно через первую встречу — она позволяет услышать собственный отклик и определить, возможно ли продолжение."},
+        {q:"Я никогда не обращался(ась) к психоаналитику — чего ожидать?",a:"Вам не нужно приходить с правильными словами, чёткой историей или готовым объяснением. Мы начинаем оттуда, где вы находитесь. Сессии — это не тесты. Смятение, колебания, тишина и незнание, с чего начать — всё это совершенно допустимо."},
+        {q:"Нужно ли быть в кризисе, чтобы обратиться к психоанализу?",a:"Совсем нет. Многие люди приходят, потому что что-то ощущается повторяющимся, сложным, болезненным или просто трудно понятным. Вам не нужно достигать точки излома, прежде чем обратиться за помощью."},
         {q:"Сколько стоят сессии?",a:"Стоимость обсуждается открыто и с уважением. Я предлагаю чёткое ценообразование, и там, где это уместно, я рада обсудить условия, которые будут соответствовать вашим обстоятельствам. Правильная стоимость может быть согласована во время краткого вводного звонка."},
-        {q:"Мой подросток не открывается — вы всё равно можете с ним работать?",a:"Подросткам не нужно приходить готовыми открываться. Работа начинается с создания пространства для их собственного способа входа. Сопротивление само по себе является частью работы, а не препятствием для неё. Многие молодые люди, отказывавшиеся от терапии, находят свой путь, когда обстановка по-настоящему их собственная."},
-        {q:"Я уже пробовал(а) терапию, и это не помогло.",a:"Этот опыт стоит воспринимать серьёзно, и совершенно справедливо его назвать. Предыдущая терапия могла не подойти вам по атмосфере, времени или подходу. Многие люди возвращаются к терапии после разочарования и обнаруживают, что во второй раз становится возможным что-то по-настоящему другое."},
+        {q:"Подросток молчит — возможна ли всё равно работа?",a:"Подросток не обязан приходить, чтобы сразу говорить. Его молчание уже является формой высказывания и требует внимания так же, как и речь. Работа начинается с признания его как субъекта — того, кто имеет своё слово, даже если оно пока не оформлено. Речь не идёт о том, чтобы его «открыть», а о том, чтобы создать пространство, где он сможет занять своё место и найти собственный способ говорить."},
+        {q:"Я уже пробовал(а) терапию, и это не помогло.",a:"Строго говоря, я не предлагаю терапию — я предлагаю психоанализ. Но опыт того, что что-то не помогло, стоит принести на первую встречу. То, чего не хватало прежде, может оказаться именно тем, что становится возможным здесь."},
         {q:"Что, если я не могу найти слов для того, что чувствую?",a:"Вам это не нужно. Смятение, противоречивость и незнание, с чего начать — всё это являются действительными отправными точками. То, что труднее всего выразить словами, — часто именно то, для чего существует терапия."},
         {q:"Вы предлагаете онлайн-сессии?",a:"Да. Онлайн-сессии доступны и могут быть организованы в регулярном еженедельном ритме, подходящем к вашему режиму работы, учёбы или семейной жизни. Онлайн-работа может предлагать глубину, последовательность и настоящее терапевтическое пространство."},
         {q:"Как обеспечивается конфиденциальность?",a:"Ганна Шекунова работает в соответствии с Этическими принципами психологов и Кодексом поведения. Конфиденциальность воспринимается с высочайшей серьёзностью: то, что приносится на сессии, остаётся в рамках терапевтической обстановки. Без исключений."}
       ],
       services_label: "Что Я Предлагаю", services_heading: "Индивидуальная Психоаналитическая Терапия",
       services_sub: "Каждая сессия формируется тем, что вы приносите. Ниже приведены основные контексты, в которых я работаю.",
+      services_desc: "<p style='margin-bottom:1rem;'>Моя работа охватывает разные возрастные группы и жизненные ситуации. Я работаю с подростками и их родителями, помогая выстраивать диалог, находить взаимопонимание и выдерживать сложные периоды взросления. Отдельное направление — работа с детьми, в том числе с расстройствами аутистического спектра, где мой профессиональный интерес сосредоточен на понимании их способа взаимодействия с миром и поддержке их развития.</p><p style='margin-bottom:1rem;'>Также я работаю со взрослыми, которые сталкиваются с внутренними кризисами, переездом в другую страну, утратой опоры или поиском своего направления. В практике присутствует опыт сопровождения молодых матерей в период грудного вскармливания и последующей сепарации ребёнка, когда усиливаются тревоги и внутреннее напряжение.</p><p style='margin-bottom:1rem;'>Работа может касаться тревожных состояний, панических атак, трудностей в отношениях, повторяющихся жизненных сценариев, ощущения растерянности или невозможности реализовать себя. В центре внимания — не только сам симптом, но и то, что за ним стоит.</p><p>Процесс строится как постепенное прояснение: становится возможным лучше понять свои переживания, различить собственные желания и опереться на свои сильные стороны.</p>",
       service1_title: "Индивидуальная Терапия", service1_desc: "Психоаналитические сессии один на один для взрослых. Пространство для свободной речи — чтобы исследовать то, что повторяется, что сбивает с толку или что просто ощущается слишком тяжёлым.", service1_link: "Связаться",
       service2_title: "Работа с Детьми и Подростками", service2_desc: "Специализированная работа с детьми, подростками и молодыми взрослыми — опираясь на богатый опыт в образовательных и социальных условиях в Киеве и Ирландии.", service2_link: "Связаться",
       service3_title: "Личные и Онлайн-сессии", service3_desc: "Сессии проводятся как лично, так и онлайн, и могут быть организованы в регулярном еженедельном ритме, подходящем для вашего режима работы, учёбы или семейной жизни.", service3_link: "Связаться",
       dark_label: "Терапевтическое Пространство", dark_heading: "О Работе<br>Лично",
       dark_body: "Ганна убеждена, что личная встреча — это предпочтительный и наиболее значимый способ войти в терапевтические отношения, и что для каждого, кто имеет такую возможность, она необходима. Встречаться в одном пространстве, неделя за неделей, — значит создавать условия для связи и глубины, принципиально отличные от любого экрана. Она тепло призывает всех, кто может, в первую очередь рассмотреть сессии лично. Никто не почувствует, что его обстоятельства стоят на пути.",
       dark_cta: "Начать Разговор",
-      phone_label: "Предпочитаете позвонить?", phone_heading: "+353 (0)831 134 629",
+      phone_label: "Предпочитаете позвонить?", phone_heading: "+353 (83) 113 4629",
       phone_body: "Ганна активно поощряет людей звонить — это предпочтительный и наиболее непосредственный способ первого контакта. Она не строга ни с кем, и никто не почувствует, что вторгается или что его вопрос незначителен. Пожалуйста, не стесняйтесь обращаться.",
       contact_label: "Свяжитесь", contact_heading: "Свяжитесь со Мной для Записи",
       contact_sub: "Я буду рада услышать от вас. Заполните форму ниже, и я отвечу в течение одного-двух рабочих дней. Стоимость обсуждается открыто и с уважением.",
@@ -964,6 +970,42 @@
     const saved = localStorage.getItem('lang');
     applyLang(saved && T[saved] ? saved : 'en');
   })();
+
+  // ─── CONTACT FORM (Web3Forms) ────────────────────────────────────
+  const form = document.getElementById('form');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    formData.append("access_key", "2d708c0c-815c-44e3-b69f-eae0df4930f6");
+
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Success! Your message has been sent.");
+        form.reset();
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
   </script>
 </body>
 </html>
